@@ -1,0 +1,6 @@
+{
+  "name": "Alt Ligler - Haftanın Sonuçları",
+  "description": "Trendyol 1. Lig maç sonuçları için profesyonel 1080x1350 sosyal medya grafik ve poster üretim platformu",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
