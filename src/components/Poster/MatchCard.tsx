@@ -80,7 +80,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
   return (
     <div
       className={`relative w-full h-full rounded-xl bg-gradient-to-br from-[#061A22]/95 via-[#092633]/95 to-[#041219]/98 border border-cyan-500/35 shadow-xl flex flex-col justify-between overflow-hidden transition-all group ${
-        compact ? 'p-2.5 sm:p-3' : 'p-3 sm:p-3.5'
+        compact ? 'p-2.5' : 'p-3.5'
       }`}
     >
       {/* Top Left Numbered Technical Indicator Badge */}
@@ -102,7 +102,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end text-right">
           <span
             className={`font-montserrat uppercase tracking-tight leading-snug line-clamp-2 ${
-              compact ? 'text-xs' : 'text-xs sm:text-sm'
+              compact ? 'text-xs' : 'text-sm'
             } ${
               homeIsWinner
                 ? 'text-[#FF6500] font-black drop-shadow-[0_0_8px_rgba(255,101,0,0.5)]'
@@ -121,7 +121,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center gap-1.5 font-bebas tracking-wider leading-none">
                 <span
-                  className={`text-4xl sm:text-5xl font-black ${
+                  className={`text-5xl font-black ${
                     homeIsWinner
                       ? 'text-[#FF6500] drop-shadow-[0_0_12px_rgba(255,101,0,0.6)]'
                       : 'text-white'
@@ -131,7 +131,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
                 </span>
                 <span className="text-cyan-400/60 text-xl font-sans font-bold px-0.5">-</span>
                 <span
-                  className={`text-4xl sm:text-5xl font-black ${
+                  className={`text-5xl font-black ${
                     awayIsWinner
                       ? 'text-[#FF6500] drop-shadow-[0_0_12px_rgba(255,101,0,0.6)]'
                       : 'text-white'
@@ -154,7 +154,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
               <span className="bg-red-600 text-white font-black text-[10px] px-2.5 py-0.5 rounded-full animate-pulse tracking-widest font-mono shadow-sm shadow-red-600/50">
                 ● CANLI
               </span>
-              <div className="flex items-center gap-1.5 font-bebas text-3xl sm:text-4xl text-[#FF6500] font-black leading-none">
+              <div className="flex items-center gap-1.5 font-bebas text-4xl text-[#FF6500] font-black leading-none">
                 <span>{homeScore ?? 0}</span>
                 <span className="text-cyan-400/60 text-lg font-sans">-</span>
                 <span>{awayScore ?? 0}</span>
@@ -167,7 +167,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
               <span className="text-base font-black font-bebas tracking-widest text-cyan-300">
                 VS
               </span>
-              <span className="text-2xl sm:text-3xl font-black font-bebas text-[#FF6500] mt-1 drop-shadow-[0_0_10px_rgba(255,101,0,0.5)]">
+              <span className="text-3xl font-black font-bebas text-[#FF6500] mt-1 drop-shadow-[0_0_10px_rgba(255,101,0,0.5)]">
                 {displayTime}
               </span>
             </div>
@@ -197,7 +197,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
           <TeamLogo team={awayTeam} size={logoSize} />
           <span
             className={`font-montserrat uppercase tracking-tight leading-snug line-clamp-2 ${
-              compact ? 'text-xs' : 'text-xs sm:text-sm'
+              compact ? 'text-xs' : 'text-sm'
             } ${
               awayIsWinner
                 ? 'text-[#FF6500] font-black drop-shadow-[0_0_8px_rgba(255,101,0,0.5)]'
@@ -211,7 +211,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
       </div>
 
       {/* Date & Time Technical Bottom Ribbon */}
-      <div className="w-full text-center mt-2 pt-1.5 border-t border-cyan-500/20 text-[10px] sm:text-[11px] text-cyan-200/90 font-mono tracking-widest font-bold uppercase">
+      <div className="w-full text-center mt-2 pt-1.5 border-t border-cyan-500/20 text-[11px] text-cyan-200/90 font-mono tracking-widest font-bold uppercase">
         {formattedDate || '07 AĞUSTOS'} • {displayTime} TSİ
       </div>
     </div>

@@ -18,7 +18,7 @@ export const PosterCanvas = forwardRef<HTMLDivElement, PosterCanvasProps>(
         ref={ref}
         id="alt-ligler-poster-canvas"
         style={{ width: '1080px', height: '1350px' }}
-        className="relative bg-[#040C12] text-white p-7 sm:p-8 flex flex-col justify-between overflow-hidden select-none font-sans border border-cyan-900/50 shadow-2xl"
+        className="relative bg-[#040C12] text-white p-8 flex flex-col justify-between overflow-hidden select-none font-sans border border-cyan-900/50 shadow-2xl"
       >
         {/* Background Graphic Accents & Broadcast Lighting */}
         {/* Top-left Cyan Stadium Floodlight */}

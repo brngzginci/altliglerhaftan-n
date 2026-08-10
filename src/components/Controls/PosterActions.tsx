@@ -8,6 +8,8 @@ interface PosterActionsProps {
   disabled?: boolean;
 }
 
+const GOOGLE_FONTS_CSS = "@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');";
+
 export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, disabled = false }) => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
@@ -23,33 +25,40 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
     try {
       const node = posterRef.current;
 
-      // Ensure fonts are loaded in browser
+      // Ensure fonts are fully loaded in the browser
       if (document.fonts) {
         await document.fonts.ready;
       }
 
-      // Generate PNG data URL at pixelRatio 1 for exact 1080x1350 resolution
-      // Setting fontEmbedCSS: '' avoids cross-origin CSSStyleSheet.cssRules access errors on Google Fonts link tags
+      // Generate PNG at fixed 1080x1350 resolution with embedded fonts
       let dataUrl: string;
       try {
         dataUrl = await toPng(node, {
+          width: 1080,
+          height: 1350,
           quality: 0.98,
           pixelRatio: 1,
           cacheBust: true,
-          fontEmbedCSS: '',
+          fontEmbedCSS: GOOGLE_FONTS_CSS,
           style: {
             transform: 'none',
             transformOrigin: 'top left',
+            width: '1080px',
+            height: '1350px',
           },
         });
       } catch (err: any) {
         dataUrl = await toPng(node, {
+          width: 1080,
+          height: 1350,
           quality: 0.98,
           pixelRatio: 1,
           fontEmbedCSS: '',
           style: {
             transform: 'none',
             transformOrigin: 'top left',
+            width: '1080px',
+            height: '1350px',
           },
         });
       }
