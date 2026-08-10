@@ -48,12 +48,12 @@ export const PosterHeader: React.FC<PosterHeaderProps> = ({
       {/* Main Editorial Headline Block */}
       <div className="flex flex-col items-center text-center w-full mt-1">
         {/* Subtitle - Competition Identity */}
-        <span className="text-2xl font-black font-montserrat tracking-[0.25em] text-[#00AFAF] uppercase drop-shadow mb-1">
+        <span className="text-2xl font-black font-montserrat tracking-[0.25em] text-[#00AFAF] uppercase drop-shadow mb-1 whitespace-nowrap">
           {leagueName}
         </span>
 
         {/* Big Editorial Display Headline */}
-        <h1 className="text-7xl font-black font-bebas tracking-wider text-white uppercase leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] my-1">
+        <h1 className="text-7xl font-black font-bebas tracking-wider text-white uppercase leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] my-1 whitespace-nowrap">
           {headlineText}
         </h1>
 
@@ -61,7 +61,7 @@ export const PosterHeader: React.FC<PosterHeaderProps> = ({
         <div className="w-80 h-[2px] bg-gradient-to-r from-transparent via-[#00AFAF] to-transparent my-1.5 opacity-90" />
 
         {/* Week & Season Sub-Headline Badge */}
-        <div className="flex items-center gap-2.5 text-sm font-mono font-black tracking-[0.25em] text-cyan-200 uppercase bg-[#072430]/90 px-4 py-1 rounded-full border border-cyan-500/40 shadow-md">
+        <div className="flex items-center gap-2.5 text-sm font-mono font-black tracking-[0.25em] text-cyan-200 uppercase bg-[#072430]/90 px-4 py-1 rounded-full border border-cyan-500/40 shadow-md whitespace-nowrap">
           <span className="text-[#FF6500] font-black">{week}. HAFTA</span>
           <span className="text-cyan-500/60">•</span>
           <span>{season} SEZONU</span>
