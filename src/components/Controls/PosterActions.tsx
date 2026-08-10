@@ -12,7 +12,7 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
-  const [resolution, setResolution] = useState<'2k' | '1080p' | '4k'>('2k'); // '2k' default Ultra HD
+  const [resolution, setResolution] = useState<'1080p' | '2k' | '4k'>('2k');
 
   const handleDownloadPng = async () => {
     if (!posterRef.current || isExporting || disabled) return;
@@ -21,39 +21,16 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
     setExportError(null);
     setExportSuccess(false);
 
-    let tempContainer: HTMLElement | null = null;
-
     try {
-      const sourceNode = posterRef.current;
+      const node = posterRef.current;
 
-      // 1. Create an unscaled offscreen clone attached directly to document.body
-      // This eliminates mobile screen scaling / subpixel layout shifts completely.
-      tempContainer = sourceNode.cloneNode(true) as HTMLElement;
-      tempContainer.id = 'temp-poster-export-clone';
-      tempContainer.style.position = 'fixed';
-      tempContainer.style.left = '-9999px';
-      tempContainer.style.top = '-9999px';
-      tempContainer.style.width = '1080px';
-      tempContainer.style.height = '1350px';
-      tempContainer.style.transform = 'none';
-      tempContainer.style.margin = '0';
-      tempContainer.style.zIndex = '-99999';
-      tempContainer.style.pointerEvents = 'none';
+      // 1. Ensure fonts are loaded
+      if (document.fonts) {
+        await document.fonts.ready;
+      }
 
-      // 2. Inject font stylesheet into the clone to guarantee font family application
-      const styleTag = document.createElement('style');
-      styleTag.textContent = `
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        .font-bebas { font-family: 'Bebas Neue', sans-serif !important; }
-        .font-montserrat { font-family: 'Montserrat', sans-serif !important; }
-        .font-sans { font-family: 'Plus Jakarta Sans', sans-serif !important; }
-      `;
-      tempContainer.appendChild(styleTag);
-
-      document.body.appendChild(tempContainer);
-
-      // 3. Wait for all <img> tags inside the clone to finish loading
-      const images = Array.from(tempContainer.querySelectorAll('img'));
+      // 2. Ensure all images inside poster are completely loaded
+      const images = Array.from(node.querySelectorAll('img')) as HTMLImageElement[];
       await Promise.all(
         images.map(
           (img) =>
@@ -68,58 +45,59 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
         )
       );
 
-      // 4. Ensure web fonts are fully loaded
-      if (document.fonts) {
-        await document.fonts.ready;
-      }
+      // Brief delay for styling layout stabilization
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      // Small delay for browser style recalculation
-      await new Promise((res) => setTimeout(res, 100));
+      // Choose ratio for target HD resolution
+      let ratio = 2; // 2K Ultra HD default (2160x2700 px)
+      if (resolution === '1080p') ratio = 1; // 1080x1350 px
+      if (resolution === '4k') ratio = 3; // 3240x4050 px
 
-      // Determine pixel ratio based on chosen HD setting
-      let ratio = 2; // 2K Ultra HD (2160x2700)
-      if (resolution === '1080p') ratio = 1; // 1080x1350
-      if (resolution === '4k') ratio = 3; // 3240x4050 4K Ultra HD
-
-      // 5. Render pass 1 (Warming up SVG image/font cache)
-      try {
-        await toPng(tempContainer, {
-          width: 1080,
-          height: 1350,
-          pixelRatio: ratio,
-          cacheBust: true,
-        });
-      } catch (e) {
-        // Continue to pass 2
-      }
-
-      // 6. Render pass 2 (Final Ultra HD PNG data extraction)
-      const dataUrl = await toPng(tempContainer, {
+      const exportOptions = {
         width: 1080,
         height: 1350,
+        canvasWidth: 1080 * ratio,
+        canvasHeight: 1350 * ratio,
         pixelRatio: ratio,
+        backgroundColor: '#040C12',
         cacheBust: true,
-        quality: 1.0,
-      });
+        style: {
+          transform: 'none',
+          transformOrigin: 'top left',
+          width: '1080px',
+          height: '1350px',
+        },
+      };
 
-      // 7. Trigger browser download
+      // Warmup pass
+      try {
+        await toPng(node, exportOptions);
+      } catch (e) {
+        // Cache warmup silently handled
+      }
+
+      // Final high-fidelity pass
+      const dataUrl = await toPng(node, exportOptions);
+
+      if (!dataUrl || dataUrl === 'data:,' || dataUrl.length < 1000) {
+        throw new Error('Görsel üretimi boş kaldı. Lütfen tekrar deneyin.');
+      }
+
+      // Download file
       const filename = `alt-ligler-1-lig-hafta-${week}-${resolution.toUpperCase()}.png`;
       const link = document.createElement('a');
       link.download = filename;
       link.href = dataUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
 
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), 4000);
     } catch (err: any) {
-      console.error('[PosterActions] PNG export failed:', err);
-      setExportError(
-        err.message || 'PNG oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.'
-      );
+      console.error('[PosterActions] Export error:', err);
+      setExportError(err?.message || 'PNG oluşturulurken bir sorun oluştu.');
     } finally {
-      if (tempContainer && document.body.contains(tempContainer)) {
-        document.body.removeChild(tempContainer);
-      }
       setIsExporting(false);
     }
   };
@@ -159,7 +137,7 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            1080p (Standard)
+            1080p
           </button>
           <button
             type="button"
@@ -171,7 +149,7 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
             }`}
           >
             <Sparkles className="w-3 h-3" />
-            2K Ultra HD (Tavsiye)
+            2K HD (Tavsiye)
           </button>
           <button
             type="button"
@@ -182,7 +160,7 @@ export const PosterActions: React.FC<PosterActionsProps> = ({ posterRef, week, d
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            4K Max
+            4K Ultra
           </button>
         </div>
 
