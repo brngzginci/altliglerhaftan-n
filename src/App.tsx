@@ -31,7 +31,10 @@ export default function App() {
     if (result.success === true) {
       setFixtures(result.matches || []);
     } else {
-      setError(result.error || 'Sahadan verileri çekilemedi.');
+      const errorStr = typeof result.error === 'string'
+        ? result.error
+        : (result.error && typeof result.error === 'object' ? (result.error as any).message || JSON.stringify(result.error) : 'Sahadan verileri çekilemedi.');
+      setError(errorStr);
       setFixtures([]);
     }
 

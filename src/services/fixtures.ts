@@ -17,12 +17,17 @@ export async function fetchFixtures(params: FetchFixturesParams): Promise<Fixtur
       },
     });
 
-    const data: FixturesApiResponse = await response.json().catch(() => ({
+    const data: any = await response.json().catch(() => ({
       success: false,
-      error: `Failed to parse response (HTTP Status ${response.status})`,
+      error: `Sunucu yanıtı okunamadı (HTTP Status ${response.status})`,
     }));
 
-    return data;
+    if (data && data.error && typeof data.error === 'object') {
+      const errObj = data.error as any;
+      data.error = errObj.message || errObj.code || JSON.stringify(errObj);
+    }
+
+    return data as FixturesApiResponse;
   } catch (error: any) {
     console.error('[FixturesService] Network or unexpected error:', error);
     return {
