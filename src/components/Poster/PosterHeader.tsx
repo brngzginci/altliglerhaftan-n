@@ -20,7 +20,7 @@ export const PosterHeader: React.FC<PosterHeaderProps> = ({
   const playedCount = matches.filter((m) => m.status === 'played').length;
   const isMostlyPlayed = playedCount >= Math.max(1, matches.length / 2);
 
-  const headlineText = isMostlyPlayed ? 'HAFTANIN SONUÇLARI' : 'HAFTANIN FİKSTÜRÜ';
+  const headlineText = isMostlyPlayed ? 'HAFTANIN SONUÇLARI' : 'GELECEK HAFTANIN FİKSTÜRÜ';
 
   return (
     <div className="w-full flex flex-col items-center justify-center relative z-10 mb-0 pt-1">
@@ -53,7 +53,7 @@ export const PosterHeader: React.FC<PosterHeaderProps> = ({
         </span>
 
         {/* Big Editorial Display Headline */}
-        <h1 className="text-7xl font-black font-bebas tracking-wider text-white uppercase leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] my-1 whitespace-nowrap">
+        <h1 className="text-6xl sm:text-7xl font-black font-bebas tracking-wider text-white uppercase leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] my-1 whitespace-nowrap">
           {headlineText}
         </h1>
 

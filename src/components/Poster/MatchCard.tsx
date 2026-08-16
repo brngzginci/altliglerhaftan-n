@@ -4,11 +4,11 @@ import { TeamLogo } from './TeamLogo';
 
 interface MatchCardProps {
   fixture: Fixture;
-  index: number;
+  index?: number;
   compact?: boolean;
 }
 
-export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = false }) => {
+export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }) => {
   const {
     status,
     homeTeam,
@@ -83,11 +83,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
         compact ? 'p-2.5' : 'p-3.5'
       }`}
     >
-      {/* Top Left Numbered Technical Indicator Badge */}
-      <div className="absolute top-0 left-0 bg-[#008CAB] text-white font-mono font-black text-xs px-2.5 py-0.5 rounded-br-lg z-20 border-r border-b border-cyan-400/50 shadow-sm tracking-wider">
-        {index < 10 ? `0${index}` : index}
-      </div>
-
       {/* Side Orange Winner Accent Strip */}
       {homeIsWinner && (
         <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#FF6500] shadow-[0_0_12px_#FF6500]" />
@@ -97,7 +92,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
       )}
 
       {/* Main Teams & Score Broadcast Panel */}
-      <div className="flex items-center justify-between w-full gap-2 relative z-10 pt-2 my-auto">
+      <div className="flex items-center justify-between w-full gap-2 relative z-10 my-auto">
         {/* Home Team */}
         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end text-right">
           <span
@@ -210,10 +205,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, index, compact = 
         </div>
       </div>
 
-      {/* Date & Time Technical Bottom Ribbon */}
-      <div className="w-full text-center mt-2 pt-1.5 border-t border-cyan-500/20 text-[11px] text-cyan-200/90 font-mono tracking-widest font-bold uppercase">
-        {formattedDate || '07 AĞUSTOS'} • {displayTime} TSİ
-      </div>
+      {/* Date & Time Technical Bottom Ribbon (Only for unplayed/upcoming fixtures) */}
+      {!isPlayed && (
+        <div className="w-full text-center mt-2 pt-1.5 border-t border-cyan-500/20 text-[11px] text-cyan-200/90 font-mono tracking-widest font-bold uppercase">
+          {formattedDate || '07 AĞUSTOS'} • {displayTime} TSİ
+        </div>
+      )}
     </div>
   );
 };
