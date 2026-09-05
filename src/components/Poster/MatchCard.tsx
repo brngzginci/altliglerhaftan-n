@@ -26,16 +26,16 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
   const isFixture = status === 'fixture';
   const isPostponed = status === 'postponed';
   const isCancelled = status === 'cancelled';
+  const isBye = status === 'bye' || fixture.isBye || awayTeam?.name?.trim().toUpperCase() === 'BAY' || homeTeam?.name?.trim().toUpperCase() === 'BAY';
 
-  // Format kickoff time with +3 hours shift for TSİ (Turkey Time)
+  // Format kickoff time (preserves authentic kickoff time, handles HH:mm and HH:mm:ss without artificial shift)
   const formatKickoffTime = (timeStr: string | undefined): string => {
-    if (!timeStr) return '21:30';
+    if (!timeStr) return '--:--';
     const trimmed = timeStr.trim();
-    const match = trimmed.match(/^(\d{1,2}):(\d{2})$/);
+    const match = trimmed.match(/^(\d{1,2}):(\d{2})/);
     if (!match) return trimmed;
-    let hours = parseInt(match[1], 10);
+    const hours = parseInt(match[1], 10);
     const minutes = match[2];
-    hours = (hours + 3) % 24;
     const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
     return `${formattedHours}:${minutes}`;
   };
@@ -69,6 +69,54 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
   };
 
   const formattedDate = formatDateStr(date);
+
+  // Dedicated BAY card rendering (when a team has a bye week)
+  if (isBye) {
+    const byeTeam = homeTeam.name?.trim().toUpperCase() === 'BAY' ? awayTeam : homeTeam;
+    return (
+      <div
+        className={`relative w-full h-full rounded-xl bg-gradient-to-r from-[#061d28]/95 via-[#0b2938]/95 to-[#061d28]/95 border border-cyan-400/40 shadow-xl flex items-center justify-between overflow-hidden transition-all ${
+          compact ? 'p-2.5 px-4' : 'p-3.5 px-5'
+        }`}
+      >
+        {/* Left Accent Bar */}
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-cyan-400 to-[#FF6500] shadow-[0_0_10px_#00afaf]" />
+
+        {/* Team Identity */}
+        <div className="flex items-center gap-3 min-w-0 z-10">
+          <TeamLogo team={byeTeam} size={compact ? 42 : 48} />
+          <div className="flex flex-col">
+            <span
+              className={`font-montserrat uppercase tracking-tight text-white font-black leading-snug line-clamp-1 ${
+                compact ? 'text-xs' : 'text-sm'
+              }`}
+              title={byeTeam.name}
+            >
+              {byeTeam.name}
+            </span>
+            <span className="text-[10px] text-cyan-300/80 font-mono tracking-wider uppercase font-semibold">
+              HAFTALIK FİKSTÜR
+            </span>
+          </div>
+        </div>
+
+        {/* BAY Badge & Status */}
+        <div className="flex items-center gap-2 z-10">
+          <div className="flex flex-col items-end">
+            <div className="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/60 flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,175,175,0.3)]">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="text-xs font-black tracking-widest text-cyan-300 font-mono uppercase">
+                BAY GEÇİYOR
+              </span>
+            </div>
+            <span className="text-[9px] text-slate-400 font-mono mt-1 tracking-wider uppercase">
+              BU HAFTA MAÇI YOK
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Winner highlights
   const homeIsWinner = isPlayed && homeScore !== null && awayScore !== null && homeScore > awayScore;
@@ -208,7 +256,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
       {/* Date & Time Technical Bottom Ribbon (Only for unplayed/upcoming fixtures) */}
       {!isPlayed && (
         <div className="w-full text-center mt-2 pt-1.5 border-t border-cyan-500/20 text-[11px] text-cyan-200/90 font-mono tracking-widest font-bold uppercase">
-          {formattedDate || '07 AĞUSTOS'} • {displayTime} TSİ
+          {formattedDate ? formattedDate : ''}
+          {formattedDate && displayTime !== '--:--' ? ' • ' : ''}
+          {displayTime !== '--:--' ? `${displayTime} TSİ` : ''}
         </div>
       )}
     </div>

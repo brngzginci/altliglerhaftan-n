@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { TeamInfo } from '../../types/fixture';
+import { findAuthenticTeamLogo } from '../../data/turkishLowerLeagueTeams';
 
 interface TeamLogoProps {
   team: TeamInfo;
@@ -20,7 +21,13 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
     return name.slice(0, 3).toUpperCase();
   };
 
-  if (hasError || !team.logo) {
+  // Determine logo URL: prefer team.logo from Mackolik CDN
+  let effectiveLogo = team.logo;
+  if (!effectiveLogo || effectiveLogo.includes('tmssl.akamaized.net')) {
+    effectiveLogo = findAuthenticTeamLogo(team.name, team.id);
+  }
+
+  if (hasError || !effectiveLogo) {
     return (
       <div
         style={{ width: `${size}px`, height: `${size}px`, minWidth: `${size}px` }}
@@ -38,9 +45,16 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
       className="flex-shrink-0 flex items-center justify-center relative"
     >
       <img
-        src={team.logo}
+        src={effectiveLogo}
         alt={team.name}
+        referrerPolicy="no-referrer"
         crossOrigin="anonymous"
+        onLoad={(e) => {
+          // If Mackolik returns a 1x1 transparent pixel for missing logos, trigger clean shield badge
+          if (e.currentTarget.naturalWidth <= 1 && e.currentTarget.naturalHeight <= 1) {
+            setHasError(true);
+          }
+        }}
         onError={() => setHasError(true)}
         style={{ maxWidth: '100%', maxHeight: '100%' }}
         className={`object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)] ${className}`}

@@ -2,13 +2,19 @@ import type { FixturesApiResponse } from '../types/fixture';
 
 export interface FetchFixturesParams {
   season?: string;
+  league?: string;
+  group?: string;
   week: number;
 }
 
 export async function fetchFixtures(params: FetchFixturesParams): Promise<FixturesApiResponse> {
   try {
     const season = params.season || '2026-2027';
-    const url = `/api/fixtures?season=${encodeURIComponent(season)}&week=${encodeURIComponent(params.week)}`;
+    const league = params.league || 'trendyol-1-lig';
+    let url = `/api/fixtures?season=${encodeURIComponent(season)}&week=${encodeURIComponent(params.week)}&league=${encodeURIComponent(league)}`;
+    if (params.group) {
+      url += `&group=${encodeURIComponent(params.group)}`;
+    }
 
     const response = await fetch(url, {
       method: 'GET',

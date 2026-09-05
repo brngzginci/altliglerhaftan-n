@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, RefreshCw, Calendar, Sparkles } from 'lucide
 interface WeekSelectorProps {
   currentWeek: number;
   totalWeeks?: number;
+  leagueTitle?: string;
   onWeekChange: (week: number) => void;
   onRefresh: () => void;
   isLoading: boolean;
@@ -12,6 +13,7 @@ interface WeekSelectorProps {
 export const WeekSelector: React.FC<WeekSelectorProps> = ({
   currentWeek,
   totalWeeks = 38,
+  leagueTitle = 'Trendyol 1. Lig Maç ve Fikstür Seçimi',
   onWeekChange,
   onRefresh,
   isLoading,
@@ -52,7 +54,7 @@ export const WeekSelector: React.FC<WeekSelectorProps> = ({
                 2026-2027 Sezonu
               </span>
             </div>
-            <p className="text-xs text-zinc-400 mt-0.5">Trendyol 1. Lig Maç ve Fikstür Seçimi</p>
+            <p className="text-xs text-zinc-400 mt-0.5">{leagueTitle}</p>
           </div>
         </div>
 

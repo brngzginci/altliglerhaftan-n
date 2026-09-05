@@ -1,5 +1,6 @@
 import type { Fixture, FixtureStatus, TeamInfo } from '../../src/types/fixture';
 import type { RawMatch, RawTeam } from '../parsers/sahadanFixtures';
+import { findAuthenticTeamId } from '../../src/data/turkishLowerLeagueTeams';
 
 export function normalizeStatus(rawStatus?: string): FixtureStatus {
   if (!rawStatus || typeof rawStatus !== 'string') {
@@ -34,8 +35,14 @@ export function normalizeStatus(rawStatus?: string): FixtureStatus {
 }
 
 export function normalizeTeam(rawTeam: RawTeam): TeamInfo {
-  const id = Number(rawTeam.id) || 0;
+  let id = Number(rawTeam.id) || 0;
   const name = rawTeam.display_name?.trim() || rawTeam.name?.trim() || 'Bilinmeyen Takım';
+
+  const authenticId = findAuthenticTeamId(name, 0);
+  if (authenticId > 0) {
+    id = authenticId;
+  }
+
   const logo = `https://file.mackolikfeeds.com/teams/${id}?w=s`;
 
   return {

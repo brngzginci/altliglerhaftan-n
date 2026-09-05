@@ -7,12 +7,14 @@ import { PosterFooter } from './PosterFooter';
 interface PosterCanvasProps {
   week: number;
   season?: string;
+  leagueId?: string;
   leagueName?: string;
+  groupName?: string;
   matches: Fixture[];
 }
 
 export const PosterCanvas = forwardRef<HTMLDivElement, PosterCanvasProps>(
-  ({ week, season = '2026-2027', leagueName = 'TRENDYOL 1. LİG', matches }, ref) => {
+  ({ week, season = '2026-2027', leagueId = 'trendyol-1-lig', leagueName = 'TRENDYOL 1. LİG', groupName, matches }, ref) => {
     return (
       <div
         ref={ref}
@@ -50,7 +52,9 @@ export const PosterCanvas = forwardRef<HTMLDivElement, PosterCanvasProps>(
           <PosterHeader
             week={week}
             season={season}
+            leagueId={leagueId}
             leagueName={leagueName}
+            groupName={groupName}
             matches={matches}
           />
         </div>
