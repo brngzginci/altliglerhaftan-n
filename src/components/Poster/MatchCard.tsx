@@ -8,6 +8,42 @@ interface MatchCardProps {
   compact?: boolean;
 }
 
+// Determine optimal font size based on team name length and word length
+const getTeamFontSize = (name: string, isCompact: boolean) => {
+  const clean = name.trim();
+  const words = clean.split(/\s+/);
+  const longestWord = Math.max(...words.map((w) => w.length));
+  const totalLength = clean.length;
+
+  if (isCompact) {
+    if (totalLength >= 23 || longestWord >= 13) {
+      return 'text-[9px] leading-tight';
+    }
+    if (longestWord >= 11 || totalLength >= 17) {
+      return 'text-[9.5px] leading-tight';
+    }
+    if (longestWord >= 10 || totalLength >= 14) {
+      return 'text-[10.5px] leading-tight';
+    }
+    return 'text-xs leading-snug';
+  } else {
+    // Normal poster grid
+    if (totalLength >= 24) {
+      return 'text-[10px] leading-tight';
+    }
+    if (longestWord >= 13 || totalLength >= 20) {
+      return 'text-[10.5px] leading-tight';
+    }
+    if (longestWord >= 11 || totalLength >= 15) {
+      return 'text-[11.5px] leading-tight';
+    }
+    if (longestWord >= 9 || totalLength >= 12) {
+      return 'text-xs leading-snug';
+    }
+    return 'text-sm leading-snug';
+  }
+};
+
 export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }) => {
   const {
     status,
@@ -87,9 +123,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
           <TeamLogo team={byeTeam} size={compact ? 42 : 48} />
           <div className="flex flex-col">
             <span
-              className={`font-montserrat uppercase tracking-tight text-white font-black leading-snug line-clamp-1 ${
-                compact ? 'text-xs' : 'text-sm'
-              }`}
+              className={`font-montserrat uppercase tracking-tight text-white font-black leading-snug line-clamp-1 ${getTeamFontSize(
+                byeTeam.name,
+                compact
+              )}`}
               title={byeTeam.name}
             >
               {byeTeam.name}
@@ -123,12 +160,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
   const awayIsWinner = isPlayed && homeScore !== null && awayScore !== null && awayScore > homeScore;
 
   // Determine logo size dynamically based on compactness
-  const logoSize = compact ? 42 : 48;
+  const logoSize = compact ? 40 : 44;
 
   return (
     <div
       className={`relative w-full h-full rounded-xl bg-gradient-to-br from-[#061A22]/95 via-[#092633]/95 to-[#041219]/98 border border-cyan-500/35 shadow-xl flex flex-col justify-between overflow-hidden transition-all group ${
-        compact ? 'p-2.5' : 'p-3.5'
+        compact ? 'p-2.5' : 'p-3'
       }`}
     >
       {/* Side Orange Winner Accent Strip */}
@@ -144,9 +181,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
         {/* Home Team */}
         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end text-right">
           <span
-            className={`font-montserrat uppercase tracking-tight leading-snug line-clamp-2 ${
-              compact ? 'text-xs' : 'text-sm'
-            } ${
+            className={`font-montserrat uppercase tracking-tight line-clamp-2 ${getTeamFontSize(
+              homeTeam.name,
+              compact
+            )} ${
               homeIsWinner
                 ? 'text-[#FF6500] font-black drop-shadow-[0_0_8px_rgba(255,101,0,0.5)]'
                 : 'text-white font-extrabold'
@@ -159,7 +197,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
         </div>
 
         {/* Score / Status Center Panel */}
-        <div className="flex flex-col items-center justify-center flex-shrink-0 min-w-[84px] px-1 py-0.5">
+        <div className="flex flex-col items-center justify-center flex-shrink-0 min-w-[76px] px-1 py-0.5">
           {isPlayed && (
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center gap-1.5 font-bebas tracking-wider leading-none">
@@ -239,9 +277,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
         <div className="flex items-center gap-2 flex-1 min-w-0 justify-start text-left">
           <TeamLogo team={awayTeam} size={logoSize} />
           <span
-            className={`font-montserrat uppercase tracking-tight leading-snug line-clamp-2 ${
-              compact ? 'text-xs' : 'text-sm'
-            } ${
+            className={`font-montserrat uppercase tracking-tight line-clamp-2 ${getTeamFontSize(
+              awayTeam.name,
+              compact
+            )} ${
               awayIsWinner
                 ? 'text-[#FF6500] font-black drop-shadow-[0_0_8px_rgba(255,101,0,0.5)]'
                 : 'text-white font-extrabold'
