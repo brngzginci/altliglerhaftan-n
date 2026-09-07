@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import { findAuthenticTeamLogo, findAuthenticTeamId } from '../src/data/turkishLowerLeagueTeams.js';
+import { findAuthenticTeamLogo, findAuthenticTeamId, getAuthenticTeamName } from '../src/data/turkishLowerLeagueTeams.js';
 
 export interface TeamInfo {
   id: number;
@@ -1038,6 +1038,153 @@ function normalizeFixtures(rawMatches: RawMatch[], weekNumber: number): Fixture[
   return rawMatches.map((m) => normalizeMatch(m, weekNumber));
 }
 
+const tffCache = new Map<string, { matches: Fixture[]; timestamp: number }>();
+const TFF_CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
+
+const KIRMIZI_17_TEAMS = [
+  "12 Bingölspor", "1461 Trabzon FK", "52 Orduspor FK", "Adana 01 FK",
+  "Erzincanspor", "Ankara Demirspor", "Beyoğlu Yeni Çarşı", "Fethiyespor",
+  "İskenderunspor", "Kahramanmaraş İstiklalspor", "Karacabey Belediyespor",
+  "Kırklarelispor", "Kütahyaspor", "Ankaragücü", "Sakaryaspor", "Serikspor", "İnegölspor"
+];
+
+async function fetchTffGroupMatches(
+  pageId: number,
+  grupId: number,
+  weekNumber: number,
+  isKirmizi: boolean = false
+): Promise<Fixture[]> {
+  const cacheKey = `tff-${pageId}-${grupId}-${weekNumber}`;
+  const cached = tffCache.get(cacheKey);
+  const now = Date.now();
+  if (cached && now - cached.timestamp < TFF_CACHE_TTL_MS) {
+    return cached.matches;
+  }
+
+  const url = `https://www.tff.org/Default.aspx?pageID=${pageId}&grupID=${grupId}&hafta=${weekNumber}`;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 6500);
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+      },
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      throw new Error(`TFF HTTP ${res.status}`);
+    }
+
+    const buf = await res.arrayBuffer();
+    const html = new TextDecoder("windows-1254").decode(buf);
+    const $ = load(html);
+
+    const matches: Fixture[] = [];
+    $("[id*=\"kupaMaclari\"] tr").each((i, tr) => {
+      const $tr = $(tr);
+      if ($tr.find("table").length > 0) return;
+
+      const $team1 = $tr.find("[id*=\"lblTakim1\"]");
+      const $team2 = $tr.find("[id*=\"lblTakim2\"]");
+      if (!$team1.length || !$team2.length) return;
+
+      const homeRaw = $team1.text().trim();
+      const awayRaw = $team2.text().trim();
+      if (!homeRaw || !awayRaw) return;
+
+      const $date = $tr.find("[id*=\"lblTarih\"]");
+      const $time = $tr.find("[id*=\"lbSaat\"]");
+      const rawDate = $date.text().trim();
+      const rawTime = $time.text().trim();
+
+      let isoDate = "";
+      if (rawDate) {
+        const parts = rawDate.split(".");
+        if (parts.length === 3) isoDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+
+      const $score = $tr.find("[id*=\"lblSkor\"]");
+      const scoreText = $score.text().trim();
+
+      let homeScore: number | null = null;
+      let awayScore: number | null = null;
+      let status: FixtureStatus = "fixture";
+
+      if (scoreText.includes("-") && /\d/.test(scoreText)) {
+        const scoreParts = scoreText.split("-").map((s) => s.trim());
+        const h = parseInt(scoreParts[0], 10);
+        const a = parseInt(scoreParts[1], 10);
+        if (!isNaN(h) && !isNaN(a)) {
+          homeScore = h;
+          awayScore = a;
+          status = "played";
+        }
+      } else if (scoreText.toLowerCase().includes("ert")) {
+        status = "postponed";
+      }
+
+      const homeId = findAuthenticTeamId(homeRaw);
+      const awayId = findAuthenticTeamId(awayRaw);
+      const homeDisplayName = getAuthenticTeamName(homeRaw, homeId);
+      const awayDisplayName = getAuthenticTeamName(awayRaw, awayId);
+      const homeLogo = findAuthenticTeamLogo(homeRaw, homeId);
+      const awayLogo = findAuthenticTeamLogo(awayRaw, awayId);
+
+      matches.push({
+        id: `tff-${pageId}-${grupId}-w${weekNumber}-${matches.length + 1}`,
+        week: weekNumber,
+        date: isoDate,
+        time: rawTime || "16:00",
+        status,
+        homeTeam: { id: homeId, name: homeDisplayName, logo: homeLogo },
+        awayTeam: { id: awayId, name: awayDisplayName, logo: awayLogo },
+        homeScore,
+        awayScore,
+        halfTimeHomeScore: null,
+        halfTimeAwayScore: null,
+      });
+    });
+
+    if (isKirmizi && matches.length === 8) {
+      const playingIds = new Set(matches.flatMap((m) => [m.homeTeam.id, m.awayTeam.id]));
+      const byeTeamName = KIRMIZI_17_TEAMS.find((name) => !playingIds.has(findAuthenticTeamId(name)));
+      if (byeTeamName) {
+        const byeId = findAuthenticTeamId(byeTeamName);
+        const byeLogo = findAuthenticTeamLogo(byeTeamName, byeId);
+        matches.push({
+          id: `tff-kirmizi-w${weekNumber}-bye`,
+          week: weekNumber,
+          date: "",
+          time: "",
+          status: "bye",
+          isBye: true,
+          homeTeam: { id: byeId, name: byeTeamName, logo: byeLogo },
+          awayTeam: { id: 0, name: "BAY", logo: "" },
+          homeScore: null,
+          awayScore: null,
+          halfTimeHomeScore: null,
+          halfTimeAwayScore: null,
+        });
+      }
+    }
+
+    if (matches.length > 0) {
+      tffCache.set(cacheKey, { matches, timestamp: now });
+      return matches;
+    }
+    throw new Error("TFF returned 0 matches");
+  } catch (err) {
+    clearTimeout(timeoutId);
+    console.warn(`[TFF] Live fetch error for pageID=${pageId} grupID=${grupId} week=${weekNumber}:`, err);
+    throw err;
+  }
+}
+
 export default async function handler(req: any, res: any) {
   try {
     if (res && typeof res.setHeader === 'function') {
@@ -1106,39 +1253,36 @@ export default async function handler(req: any, res: any) {
     // === NESİNE 2. LİG ===
     if (leagueParam === 'nesine-2-lig') {
       const isKirmizi = groupParam === 'kirmizi';
-      const baseMatches = isKirmizi ? FALLBACK_2_LIG_KIRMIZI_MATCHES : FALLBACK_2_LIG_BEYAZ_MATCHES;
+      const grupId = isKirmizi ? 3542 : 3541;
       const groupName = isKirmizi ? 'Kırmızı Grup' : 'Beyaz Grup';
+      const baseFallback = isKirmizi ? FALLBACK_2_LIG_KIRMIZI_MATCHES : FALLBACK_2_LIG_BEYAZ_MATCHES;
 
-      const finalMatches = baseMatches.map((m, idx) => {
-        if (weekNumber === 1) {
-          return { ...m, week: weekNumber };
-        }
-        if (m.status === 'bye' || m.isBye || m.awayTeam?.name === 'BAY') {
+      let finalMatches: Fixture[] = [];
+      try {
+        finalMatches = await fetchTffGroupMatches(976, grupId, weekNumber, isKirmizi);
+      } catch (e) {
+        console.warn(`[FixturesAPI] TFF 2. Lig live fetch failed, using fallback fixtures for week ${weekNumber}`);
+        finalMatches = baseFallback.map((m, idx) => {
+          if (weekNumber === 1) return { ...m, week: weekNumber };
+          if (m.status === 'bye' || m.isBye || m.awayTeam?.name === 'BAY') {
+            return { ...m, week: weekNumber, date: '', time: '', status: 'bye' as const, isBye: true };
+          }
+          const day = idx % 2 === 0 ? '12' : '13';
+          const times = ['15:30', '16:00', '16:30', '19:00'];
           return {
             ...m,
+            id: `2l-${groupParam || 'b'}-w${weekNumber}-${idx + 1}`,
             week: weekNumber,
-            date: '',
-            time: '',
-            status: 'bye' as const,
-            isBye: true,
+            date: `2026-09-${day}`,
+            time: times[idx % times.length],
+            status: 'fixture' as const,
+            homeScore: null,
+            awayScore: null,
+            halfTimeHomeScore: null,
+            halfTimeAwayScore: null,
           };
-        }
-        // Future weeks: upcoming fixtures with authentic Turkish kickoff times
-        const day = (idx % 2 === 0) ? '12' : '13';
-        const times = ['15:30', '16:00', '16:30', '19:00'];
-        return {
-          ...m,
-          id: `2l-${groupParam || 'b'}-w${weekNumber}-${idx + 1}`,
-          week: weekNumber,
-          date: `2026-09-${day}`,
-          time: times[idx % times.length],
-          status: 'fixture' as const,
-          homeScore: null,
-          awayScore: null,
-          halfTimeHomeScore: null,
-          halfTimeAwayScore: null,
-        };
-      });
+        });
+      }
 
       if (typeof res.setHeader === 'function') {
         res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
@@ -1157,50 +1301,50 @@ export default async function handler(req: any, res: any) {
 
     // === NESİNE 3. LİG ===
     if (leagueParam === 'nesine-3-lig') {
-      let baseMatches = FALLBACK_3_LIG_GRUP_1_MATCHES;
+      let grupId = 3543;
       let groupName = '1. Grup';
+      let baseFallback = FALLBACK_3_LIG_GRUP_1_MATCHES;
 
       if (groupParam === 'grup-2' || groupParam === '2') {
-        baseMatches = FALLBACK_3_LIG_GRUP_2_MATCHES;
+        grupId = 3544;
         groupName = '2. Grup';
+        baseFallback = FALLBACK_3_LIG_GRUP_2_MATCHES;
       } else if (groupParam === 'grup-3' || groupParam === '3') {
-        baseMatches = FALLBACK_3_LIG_GRUP_3_MATCHES;
+        grupId = 3545;
         groupName = '3. Grup';
+        baseFallback = FALLBACK_3_LIG_GRUP_3_MATCHES;
       } else if (groupParam === 'grup-4' || groupParam === '4') {
-        baseMatches = FALLBACK_3_LIG_GRUP_4_MATCHES;
+        grupId = 3543;
         groupName = '4. Grup';
+        baseFallback = FALLBACK_3_LIG_GRUP_4_MATCHES;
       }
 
-      const finalMatches = baseMatches.map((m, idx) => {
-        if (weekNumber === 1) {
-          return { ...m, week: weekNumber };
-        }
-        if (m.status === 'bye' || m.isBye || m.awayTeam?.name === 'BAY') {
+      let finalMatches: Fixture[] = [];
+      try {
+        finalMatches = await fetchTffGroupMatches(971, grupId, weekNumber, false);
+      } catch (e) {
+        console.warn(`[FixturesAPI] TFF 3. Lig live fetch failed, using fallback fixtures for week ${weekNumber}`);
+        finalMatches = baseFallback.map((m, idx) => {
+          if (weekNumber === 1) return { ...m, week: weekNumber };
+          if (m.status === 'bye' || m.isBye || m.awayTeam?.name === 'BAY') {
+            return { ...m, week: weekNumber, date: '', time: '', status: 'bye' as const, isBye: true };
+          }
+          const day = idx % 2 === 0 ? '12' : '13';
+          const times = ['15:30', '16:00', '16:30', '19:00'];
           return {
             ...m,
+            id: `3l-${groupParam || '1'}-w${weekNumber}-${idx + 1}`,
             week: weekNumber,
-            date: '',
-            time: '',
-            status: 'bye' as const,
-            isBye: true,
+            date: `2026-09-${day}`,
+            time: times[idx % times.length],
+            status: 'fixture' as const,
+            homeScore: null,
+            awayScore: null,
+            halfTimeHomeScore: null,
+            halfTimeAwayScore: null,
           };
-        }
-        // Future weeks: upcoming fixtures with authentic Turkish kickoff times
-        const day = (idx % 2 === 0) ? '12' : '13';
-        const times = ['15:30', '16:00', '16:30', '19:00'];
-        return {
-          ...m,
-          id: `3l-${groupParam || '1'}-w${weekNumber}-${idx + 1}`,
-          week: weekNumber,
-          date: `2026-09-${day}`,
-          time: times[idx % times.length],
-          status: 'fixture' as const,
-          homeScore: null,
-          awayScore: null,
-          halfTimeHomeScore: null,
-          halfTimeAwayScore: null,
-        };
-      });
+        });
+      }
 
       if (typeof res.setHeader === 'function') {
         res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');

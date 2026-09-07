@@ -11,6 +11,9 @@ interface TeamLogoProps {
 export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className = '' }) => {
   const [hasError, setHasError] = useState(false);
 
+  const safeTeam = team || { id: 0, name: '??', logo: '' };
+  const teamName = safeTeam.name || '??';
+
   // Extract initials for fallback shield (e.g. "Manisa FK" -> "MFK", "Boluspor" -> "BOL")
   const getInitials = (name: string): string => {
     if (!name) return '??';
@@ -22,9 +25,9 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
   };
 
   // Determine logo URL: prefer team.logo from Mackolik CDN
-  let effectiveLogo = team.logo;
+  let effectiveLogo = safeTeam.logo;
   if (!effectiveLogo || effectiveLogo.includes('tmssl.akamaized.net')) {
-    effectiveLogo = findAuthenticTeamLogo(team.name, team.id);
+    effectiveLogo = findAuthenticTeamLogo(teamName, safeTeam.id);
   }
 
   if (hasError || !effectiveLogo) {
@@ -32,9 +35,9 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
       <div
         style={{ width: `${size}px`, height: `${size}px`, minWidth: `${size}px` }}
         className={`flex-shrink-0 rounded-xl bg-gradient-to-tr from-[#051820] via-[#092936] to-[#0E3D4F] border border-cyan-400/40 flex items-center justify-center text-cyan-300 font-black font-bebas text-xs tracking-wider shadow-md ${className}`}
-        title={team.name}
+        title={teamName}
       >
-        {getInitials(team.name)}
+        {getInitials(teamName)}
       </div>
     );
   }
@@ -46,7 +49,7 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
     >
       <img
         src={effectiveLogo}
-        alt={team.name}
+        alt={teamName}
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         onLoad={(e) => {

@@ -12,7 +12,7 @@ import { FixtureEditorModal } from './components/Controls/FixtureEditorModal';
 
 export default function App() {
   const [selectedLeague, setSelectedLeague] = useState<LeagueId>('trendyol-1-lig');
-  const [selectedGroup, setSelectedGroup] = useState<string>('beyaz');
+  const [selectedGroup, setSelectedGroup] = useState<string>('');
   const [currentWeek, setCurrentWeek] = useState<number>(1);
   const [fixtures, setFixtures] = useState<Fixture[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -43,24 +43,27 @@ export default function App() {
     setIsLoading(true);
     setError(null);
 
-    const result = await fetchFixtures({
-      season: '2026-2027',
-      league,
-      group,
-      week,
-    });
+    try {
+      const result = await fetchFixtures({
+        season: '2026-2027',
+        league,
+        group: group || undefined,
+        week,
+      });
 
-    if (result.success === true) {
-      setFixtures(result.matches || []);
-    } else {
-      const errorStr = typeof result.error === 'string'
-        ? result.error
-        : (result.error && typeof result.error === 'object' ? (result.error as any).message || JSON.stringify(result.error) : 'Veriler çekilemedi.');
-      setError(errorStr);
+      if (result.success) {
+        setFixtures(result.matches || []);
+      } else {
+        setError(result.error || 'Maç verileri çekilemedi.');
+        setFixtures([]);
+      }
+    } catch (err: any) {
+      console.error('[App] Failed to load fixtures:', err);
+      setError(err?.message || 'Maç verileri yüklenirken beklenmedik bir hata oluştu.');
       setFixtures([]);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   }, []);
 
   // Initial load

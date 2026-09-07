@@ -38,6 +38,7 @@ export interface FixturesSuccessResponse {
   group?: string;
   week: number;
   matches: Fixture[];
+  error?: undefined;
 }
 
 export type LeagueId = 'trendyol-1-lig' | 'nesine-2-lig' | 'nesine-3-lig';

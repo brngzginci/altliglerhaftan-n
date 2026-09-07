@@ -20,11 +20,12 @@ export const PosterHeader: React.FC<PosterHeaderProps> = ({
   leagueId = 'trendyol-1-lig',
   leagueName = 'TRENDYOL 1. LİG',
   groupName,
-  matches,
+  matches = [],
 }) => {
   // Determine if the week is mostly played or upcoming
-  const playedCount = matches.filter((m) => m.status === 'played').length;
-  const isMostlyPlayed = playedCount >= Math.max(1, matches.length / 2);
+  const safeMatches = matches || [];
+  const playedCount = safeMatches.filter((m) => m?.status === 'played').length;
+  const isMostlyPlayed = safeMatches.length > 0 && playedCount >= Math.max(1, safeMatches.length / 2);
 
   const headlineText = isMostlyPlayed ? 'HAFTANIN SONUÇLARI' : 'GELECEK HAFTANIN FİKSTÜRÜ';
 

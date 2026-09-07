@@ -47,9 +47,10 @@ export const MatchGrid: React.FC<MatchGridProps> = ({ matches }) => {
       <div className={`grid ${gridColsClass} ${gridRowsClass} ${gapClass} w-full h-full items-stretch`}>
         {matches.map((fixture, idx) => {
           const isOddLast = count % 2 === 1 && idx === count - 1;
+          const keyId = fixture?.id || `${idx}-${fixture?.homeTeam?.id ?? 0}-${fixture?.awayTeam?.id ?? 0}`;
           return (
             <div
-              key={fixture.id || `${fixture.homeTeam.id}-${fixture.awayTeam.id}-${idx}`}
+              key={keyId}
               className={isOddLast ? 'col-span-2 flex justify-center w-full h-full' : 'w-full h-full'}
             >
               <div className={isOddLast ? 'w-full max-w-[490px] h-full' : 'w-full h-full'}>

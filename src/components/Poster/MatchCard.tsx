@@ -10,34 +10,41 @@ interface MatchCardProps {
 
 // Determine optimal font size based on team name length and word length
 const getTeamFontSize = (name: string, isCompact: boolean) => {
-  const clean = name.trim();
+  const clean = (name || '').trim();
+  const lower = clean.toLowerCase();
+
+  // Specifically handle Kastamonuspor as requested by user
+  if (lower.includes('kastamonuspor')) {
+    return isCompact ? 'text-[8.5px] leading-tight' : 'text-[10px] leading-tight';
+  }
+
   const words = clean.split(/\s+/);
   const longestWord = Math.max(...words.map((w) => w.length));
   const totalLength = clean.length;
 
   if (isCompact) {
-    if (totalLength >= 23 || longestWord >= 13) {
-      return 'text-[9px] leading-tight';
+    if (totalLength >= 22 || longestWord >= 12) {
+      return 'text-[8.5px] leading-tight';
     }
-    if (longestWord >= 11 || totalLength >= 17) {
+    if (longestWord >= 10 || totalLength >= 16) {
       return 'text-[9.5px] leading-tight';
     }
-    if (longestWord >= 10 || totalLength >= 14) {
-      return 'text-[10.5px] leading-tight';
-    }
-    return 'text-xs leading-snug';
-  } else {
-    // Normal poster grid
-    if (totalLength >= 24) {
+    if (longestWord >= 9 || totalLength >= 13) {
       return 'text-[10px] leading-tight';
     }
-    if (longestWord >= 13 || totalLength >= 20) {
-      return 'text-[10.5px] leading-tight';
+    return 'text-[11px] leading-snug';
+  } else {
+    // Normal poster grid
+    if (totalLength >= 22 || longestWord >= 12) {
+      return 'text-[10px] leading-tight';
     }
-    if (longestWord >= 11 || totalLength >= 15) {
+    if (longestWord >= 10 || totalLength >= 18) {
+      return 'text-[11px] leading-tight';
+    }
+    if (longestWord >= 9 || totalLength >= 14) {
       return 'text-[11.5px] leading-tight';
     }
-    if (longestWord >= 9 || totalLength >= 12) {
+    if (longestWord >= 8 || totalLength >= 11) {
       return 'text-xs leading-snug';
     }
     return 'text-sm leading-snug';
@@ -45,24 +52,26 @@ const getTeamFontSize = (name: string, isCompact: boolean) => {
 };
 
 export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }) => {
-  const {
-    status,
-    homeTeam,
-    awayTeam,
-    homeScore,
-    awayScore,
-    halfTimeHomeScore,
-    halfTimeAwayScore,
-    date,
-    time,
-  } = fixture;
+  const status = fixture?.status || 'fixture';
+  const homeTeam = fixture?.homeTeam || { id: 0, name: 'Bilinmeyen Takım', logo: '' };
+  const awayTeam = fixture?.awayTeam || { id: 0, name: 'Bilinmeyen Takım', logo: '' };
+  const homeScore = fixture?.homeScore ?? null;
+  const awayScore = fixture?.awayScore ?? null;
+  const halfTimeHomeScore = fixture?.halfTimeHomeScore ?? null;
+  const halfTimeAwayScore = fixture?.halfTimeAwayScore ?? null;
+  const date = fixture?.date || '';
+  const time = fixture?.time || '';
 
   const isPlayed = status === 'played';
   const isLive = status === 'live';
   const isFixture = status === 'fixture';
   const isPostponed = status === 'postponed';
   const isCancelled = status === 'cancelled';
-  const isBye = status === 'bye' || fixture.isBye || awayTeam?.name?.trim().toUpperCase() === 'BAY' || homeTeam?.name?.trim().toUpperCase() === 'BAY';
+  const isBye =
+    status === 'bye' ||
+    fixture?.isBye ||
+    awayTeam?.name?.trim().toUpperCase() === 'BAY' ||
+    homeTeam?.name?.trim().toUpperCase() === 'BAY';
 
   // Format kickoff time (preserves authentic kickoff time, handles HH:mm and HH:mm:ss without artificial shift)
   const formatKickoffTime = (timeStr: string | undefined): string => {
@@ -108,7 +117,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
 
   // Dedicated BAY card rendering (when a team has a bye week)
   if (isBye) {
-    const byeTeam = homeTeam.name?.trim().toUpperCase() === 'BAY' ? awayTeam : homeTeam;
+    const byeTeam =
+      homeTeam?.name?.trim().toUpperCase() === 'BAY'
+        ? awayTeam
+        : (homeTeam || { id: 0, name: 'BAY', logo: '' });
+    const byeName = byeTeam?.name || 'BAY';
     return (
       <div
         className={`relative w-full h-full rounded-xl bg-gradient-to-r from-[#061d28]/95 via-[#0b2938]/95 to-[#061d28]/95 border border-cyan-400/40 shadow-xl flex items-center justify-between overflow-hidden transition-all ${
@@ -124,12 +137,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
           <div className="flex flex-col">
             <span
               className={`font-montserrat uppercase tracking-tight text-white font-black leading-snug line-clamp-1 ${getTeamFontSize(
-                byeTeam.name,
+                byeName,
                 compact
               )}`}
-              title={byeTeam.name}
+              title={byeName}
             >
-              {byeTeam.name}
+              {byeName}
             </span>
             <span className="text-[10px] text-cyan-300/80 font-mono tracking-wider uppercase font-semibold">
               HAFTALIK FİKSTÜR
