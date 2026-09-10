@@ -329,7 +329,7 @@ export const FALLBACK_2_LIG_KIRMIZI_MATCHES: Fixture[] = [
     time: "16:00",
     status: "fixture",
     homeTeam: { id: 11994, name: "Karacabey Belediyespor", logo: "https://file.mackolikfeeds.com/teams/11994?w=s" },
-    awayTeam: { id: 39444, name: "Serikspor", logo: "https://file.mackolikfeeds.com/teams/39444?w=s" },
+    awayTeam: { id: 25508, name: "Serikspor", logo: "/teams/serikspor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -380,7 +380,7 @@ export const FALLBACK_2_LIG_KIRMIZI_MATCHES: Fixture[] = [
     date: "2026-09-06",
     time: "16:00",
     status: "fixture",
-    homeTeam: { id: 24813, name: "1461 Trabzon FK", logo: "https://file.mackolikfeeds.com/teams/24813?w=s" },
+    homeTeam: { id: 24813, name: "1461 Trabzon FK", logo: "/teams/1461-trabzon.png" },
     awayTeam: { id: 2230, name: "Sakaryaspor", logo: "https://file.mackolikfeeds.com/teams/2230?w=s" },
     homeScore: null,
     awayScore: null,
@@ -394,7 +394,7 @@ export const FALLBACK_2_LIG_KIRMIZI_MATCHES: Fixture[] = [
     time: "16:30",
     status: "fixture",
     homeTeam: { id: 56993, name: "Adana 01 FK", logo: "https://file.mackolikfeeds.com/teams/56993?w=s" },
-    awayTeam: { id: 9160, name: "Erzincanspor", logo: "https://file.mackolikfeeds.com/teams/9160?w=s" },
+    awayTeam: { id: 9160, name: "24 Erzincanspor", logo: "/teams/24-erzincanspor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -450,8 +450,8 @@ export const FALLBACK_3_LIG_GRUP_1_MATCHES: Fixture[] = [
     date: "2026-09-05",
     time: "15:30",
     status: "fixture",
-    homeTeam: { id: 53193, name: "İnkılap FK", logo: "https://file.mackolikfeeds.com/teams/53193?w=s" },
-    awayTeam: { id: 25497, name: "Zonguldakspor", logo: "https://file.mackolikfeeds.com/teams/25497?w=s" },
+    homeTeam: { id: 63806, name: "İnkılap FK", logo: "/teams/inkilap-fk.png" },
+    awayTeam: { id: 24823, name: "Zonguldakspor", logo: "/teams/zonguldakspor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -503,7 +503,7 @@ export const FALLBACK_3_LIG_GRUP_1_MATCHES: Fixture[] = [
     time: "16:00",
     status: "fixture",
     homeTeam: { id: 63802, name: "Yalova FK", logo: "https://file.mackolikfeeds.com/teams/63802?w=s" },
-    awayTeam: { id: 100000120, name: "Tokat Bld", logo: "https://file.mackolikfeeds.com/teams/100000120?w=s" },
+    awayTeam: { id: 60517, name: "Tokat Bld", logo: "/teams/tokat-belediye.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -555,7 +555,7 @@ export const FALLBACK_3_LIG_GRUP_1_MATCHES: Fixture[] = [
     time: "16:30",
     status: "fixture",
     homeTeam: { id: 60509, name: "Karabük İdmanyurdu", logo: "https://file.mackolikfeeds.com/teams/60509?w=s" },
-    awayTeam: { id: 39514, name: "Bulvarspor", logo: "https://file.mackolikfeeds.com/teams/39514?w=s" },
+    awayTeam: { id: 53205, name: "Bulvarspor", logo: "/teams/bulvarspor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -585,7 +585,7 @@ export const FALLBACK_3_LIG_GRUP_2_MATCHES: Fixture[] = [
     time: "19:00",
     status: "fixture",
     homeTeam: { id: 2239, name: "Altay", logo: "https://file.mackolikfeeds.com/teams/2239?w=s" },
-    awayTeam: { id: 2215, name: "Denizli İdmanyurdu", logo: "https://file.mackolikfeeds.com/teams/2215?w=s" },
+    awayTeam: { id: 2215, name: "Denizli İdmanyurdu", logo: "/teams/denizli-idmanyurdu.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -624,7 +624,7 @@ export const FALLBACK_3_LIG_GRUP_2_MATCHES: Fixture[] = [
     time: "16:00",
     status: "fixture",
     homeTeam: { id: 39446, name: "1922 Akşehirspor", logo: "https://file.mackolikfeeds.com/teams/39446?w=s" },
-    awayTeam: { id: 53209, name: "Gemlik Sümerbey FK", logo: "https://file.mackolikfeeds.com/teams/53209?w=s" },
+    awayTeam: { id: 53209, name: "Gemlik Sümerbey FK", logo: "/teams/gemlik-sumerbey.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -693,7 +693,7 @@ export const FALLBACK_3_LIG_GRUP_3_MATCHES: Fixture[] = [
     time: "15:30",
     status: "fixture",
     homeTeam: { id: 40959, name: "Bitlisspor 1916", logo: "https://file.mackolikfeeds.com/teams/40959?w=s" },
-    awayTeam: { id: 39376, name: "1964 Silifkespor", logo: "https://file.mackolikfeeds.com/teams/39376?w=s" },
+    awayTeam: { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -705,8 +705,8 @@ export const FALLBACK_3_LIG_GRUP_3_MATCHES: Fixture[] = [
     date: "2026-09-05",
     time: "15:30",
     status: "fixture",
-    homeTeam: { id: 60685, name: "Yozgat Belediyesi Bozokspor", logo: "https://file.mackolikfeeds.com/teams/60685?w=s" },
-    awayTeam: { id: 40857, name: "Kırşehir FSK", logo: "https://file.mackolikfeeds.com/teams/40857?w=s" },
+    homeTeam: { id: 44778, name: "Yozgat Belediyesi Bozokspor", logo: "/teams/yozgat-bozokspor.png" },
+    awayTeam: { id: 29068, name: "Kırşehir FSK", logo: "/teams/kirsehir-fsk.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -719,7 +719,7 @@ export const FALLBACK_3_LIG_GRUP_3_MATCHES: Fixture[] = [
     time: "19:00",
     status: "fixture",
     homeTeam: { id: 2229, name: "Adanaspor", logo: "https://file.mackolikfeeds.com/teams/2229?w=s" },
-    awayTeam: { id: 56991, name: "Niğde Bld", logo: "https://file.mackolikfeeds.com/teams/56991?w=s" },
+    awayTeam: { id: 25499, name: "Niğde Bld", logo: "/teams/nigde-belediyespor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -771,7 +771,7 @@ export const FALLBACK_3_LIG_GRUP_3_MATCHES: Fixture[] = [
     time: "16:00",
     status: "fixture",
     homeTeam: { id: 25505, name: "Diyarbekirspor", logo: "https://file.mackolikfeeds.com/teams/25505?w=s" },
-    awayTeam: { id: 39098, name: "Malatya Yeşilyurtspor", logo: "https://file.mackolikfeeds.com/teams/39098?w=s" },
+    awayTeam: { id: 39098, name: "Malatya Yeşilyurtspor", logo: "/teams/malatya-yesilyurtspor.png" },
     homeScore: null,
     awayScore: null,
     halfTimeHomeScore: null,
@@ -1284,6 +1284,18 @@ export default async function handler(req: any, res: any) {
         });
       }
 
+      finalMatches = finalMatches.map((m) => ({
+        ...m,
+        homeTeam: {
+          ...m.homeTeam,
+          logo: findAuthenticTeamLogo(m.homeTeam.name, m.homeTeam.id, m.homeTeam.logo),
+        },
+        awayTeam: {
+          ...m.awayTeam,
+          logo: findAuthenticTeamLogo(m.awayTeam.name, m.awayTeam.id, m.awayTeam.logo),
+        },
+      }));
+
       if (typeof res.setHeader === 'function') {
         res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');
       }
@@ -1345,6 +1357,18 @@ export default async function handler(req: any, res: any) {
           };
         });
       }
+
+      finalMatches = finalMatches.map((m) => ({
+        ...m,
+        homeTeam: {
+          ...m.homeTeam,
+          logo: findAuthenticTeamLogo(m.homeTeam.name, m.homeTeam.id, m.homeTeam.logo),
+        },
+        awayTeam: {
+          ...m.awayTeam,
+          logo: findAuthenticTeamLogo(m.awayTeam.name, m.awayTeam.id, m.awayTeam.logo),
+        },
+      }));
 
       if (typeof res.setHeader === 'function') {
         res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=600');

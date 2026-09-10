@@ -24,11 +24,14 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
     return name.slice(0, 3).toUpperCase();
   };
 
-  // Determine logo URL: prefer team.logo from Mackolik CDN
-  let effectiveLogo = safeTeam.logo;
-  if (!effectiveLogo || effectiveLogo.includes('tmssl.akamaized.net')) {
-    effectiveLogo = findAuthenticTeamLogo(teamName, safeTeam.id);
-  }
+  // Determine logo URL: always prioritize authentic local & verified club logos
+  const authenticLogo = findAuthenticTeamLogo(teamName, safeTeam.id, safeTeam.logo);
+  const effectiveLogo = (authenticLogo && (authenticLogo.startsWith('/teams/') || !safeTeam.logo)) 
+    ? authenticLogo 
+    : (safeTeam.logo || authenticLogo);
+
+  // Check if team is 1461 Trabzon to boost its scale if needed
+  const is1461Trabzon = teamName.toLowerCase().includes('1461');
 
   if (hasError || !effectiveLogo) {
     return (
@@ -60,7 +63,7 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
         }}
         onError={() => setHasError(true)}
         style={{ maxWidth: '100%', maxHeight: '100%' }}
-        className={`object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)] ${className}`}
+        className={`object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)] ${is1461Trabzon ? 'scale-125' : ''} ${className}`}
         loading="eager"
       />
     </div>
