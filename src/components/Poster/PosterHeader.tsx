@@ -24,7 +24,16 @@ export const PosterHeader: React.FC<PosterHeaderProps> = ({
 }) => {
   // Determine if the week is mostly played or upcoming
   const safeMatches = matches || [];
-  const playedCount = safeMatches.filter((m) => m?.status === 'played').length;
+  const playedCount = safeMatches.filter(
+    (m) =>
+      m?.status === 'played' ||
+      (m?.homeScore !== null &&
+        m?.awayScore !== null &&
+        m?.homeScore !== undefined &&
+        m?.awayScore !== undefined &&
+        String(m?.homeScore).trim() !== '' &&
+        String(m?.awayScore).trim() !== '')
+  ).length;
   const isMostlyPlayed = safeMatches.length > 0 && playedCount >= Math.max(1, safeMatches.length / 2);
 
   const headlineText = isMostlyPlayed ? 'HAFTANIN SONUÇLARI' : 'GELECEK HAFTANIN FİKSTÜRÜ';

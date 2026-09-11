@@ -14,19 +14,23 @@ const mackolikLogo = (id: number) => `https://file.mackolikfeeds.com/teams/${id}
 
 export const TURKISH_TEAMS_DATABASE: Record<string, TeamLogoEntry> = {
   // === Nesine 2. Lig - Beyaz Grup ===
-  "68 aksaray bld": { id: 11998, name: "68 Aksaray Bld", logo: mackolikLogo(11998) },
-  "68 aksaray": { id: 11998, name: "68 Aksaray Bld", logo: mackolikLogo(11998) },
-  "68 aksaray belediyespor": { id: 11998, name: "68 Aksaray Bld", logo: mackolikLogo(11998) },
-  "68 aksaray belediye spor": { id: 11998, name: "68 Aksaray Bld", logo: mackolikLogo(11998) },
+  "68 aksaray bld": { id: 11998, name: "68 Aksaray Bld", logo: "/teams/aksarayspor.png" },
+  "68 aksaray": { id: 11998, name: "68 Aksaray Bld", logo: "/teams/aksarayspor.png" },
+  "aksarayspor": { id: 11998, name: "Aksarayspor", logo: "/teams/aksarayspor.png" },
+  "68 aksaray belediyespor": { id: 11998, name: "68 Aksaray Bld", logo: "/teams/aksarayspor.png" },
+  "68 aksaray belediye spor": { id: 11998, name: "68 Aksaray Bld", logo: "/teams/aksarayspor.png" },
   "aliaga fk": { id: 39461, name: "Aliağa FK", logo: mackolikLogo(39461) },
   "aliaga futbol": { id: 39461, name: "Aliağa FK", logo: mackolikLogo(39461) },
   "aliaga futbol a s": { id: 39461, name: "Aliağa FK", logo: mackolikLogo(39461) },
   "aliaga": { id: 39461, name: "Aliağa FK", logo: mackolikLogo(39461) },
-  "ankaraspor": { id: 2232, name: "Ankaraspor", logo: mackolikLogo(2232) },
-  "arnavutkoy bld": { id: 41558, name: "Arnavutköy Bld", logo: mackolikLogo(41558) },
-  "arnavutkoy belediyespor": { id: 41558, name: "Arnavutköy Bld", logo: mackolikLogo(41558) },
-  "arkent arnavutkoy": { id: 41558, name: "Arnavutköy Bld", logo: mackolikLogo(41558) },
-  "arkent arnavutkoy belediyesi futbol sk": { id: 41558, name: "Arnavutköy Bld", logo: mackolikLogo(41558) },
+  "ankaraspor": { id: 2232, name: "Ankaraspor", logo: "/teams/ankaraspor.png" },
+  "sincan belediyesi ankaraspor": { id: 2232, name: "Ankaraspor", logo: "/teams/ankaraspor.png" },
+  "sincan bld ankaraspor": { id: 2232, name: "Ankaraspor", logo: "/teams/ankaraspor.png" },
+  "arnavutkoy bld": { id: 41558, name: "Arnavutköy Bld", logo: "/teams/arnavutkoy-bld.png" },
+  "arnavutkoy belediyespor": { id: 41558, name: "Arnavutköy Bld", logo: "/teams/arnavutkoy-bld.png" },
+  "arnavutkoy": { id: 41558, name: "Arnavutköy Bld", logo: "/teams/arnavutkoy-bld.png" },
+  "arkent arnavutkoy": { id: 41558, name: "Arnavutköy Bld", logo: "/teams/arnavutkoy-bld.png" },
+  "arkent arnavutkoy belediyesi futbol sk": { id: 41558, name: "Arnavutköy Bld", logo: "/teams/arnavutkoy-bld.png" },
   "corluspor 1947": { id: 39511, name: "Çorluspor 1947", logo: mackolikLogo(39511) },
   "corlu spor 1947": { id: 39511, name: "Çorluspor 1947", logo: mackolikLogo(39511) },
   "erbaaspor": { id: 36654, name: "Erbaaspor", logo: mackolikLogo(36654) },
@@ -34,10 +38,11 @@ export const TURKISH_TEAMS_DATABASE: Record<string, TeamLogoEntry> = {
   "efor cay erbaaspor": { id: 36654, name: "Erbaaspor", logo: mackolikLogo(36654) },
   "kastamonuspor": { id: 12009, name: "Kastamonuspor", logo: mackolikLogo(12009) },
   "gmg kastamonuspor": { id: 12009, name: "Kastamonuspor", logo: mackolikLogo(12009) },
-  "gebzespor": { id: 40074, name: "Gebzespor", logo: mackolikLogo(40074) },
-  "guzide gebze": { id: 40074, name: "Gebzespor", logo: mackolikLogo(40074) },
-  "guzide gebzespor": { id: 40074, name: "Gebzespor", logo: mackolikLogo(40074) },
-  "guzide gebze spor kulubu": { id: 40074, name: "Gebzespor", logo: mackolikLogo(40074) },
+  "gebzespor": { id: 40074, name: "Gebzespor", logo: "/teams/gebzespor.png" },
+  "guzide gebze": { id: 40074, name: "Gebzespor", logo: "/teams/gebzespor.png" },
+  "guzide gebzespor": { id: 40074, name: "Gebzespor", logo: "/teams/gebzespor.png" },
+  "guzide gebze spor kulubu": { id: 40074, name: "Gebzespor", logo: "/teams/gebzespor.png" },
+  "gebze": { id: 40074, name: "Gebzespor", logo: "/teams/gebzespor.png" },
   "isparta 32 spor": { id: 39439, name: "Isparta 32 Spor", logo: mackolikLogo(39439) },
   "isparta 32": { id: 39439, name: "Isparta 32 Spor", logo: mackolikLogo(39439) },
   "isbas isparta 32 spor kulubu": { id: 39439, name: "Isparta 32 Spor", logo: mackolikLogo(39439) },
@@ -60,10 +65,11 @@ export const TURKISH_TEAMS_DATABASE: Record<string, TeamLogoEntry> = {
   "elazigspor": { id: 2228, name: "Elazığspor", logo: mackolikLogo(2228) },
   "cimentas elazigspor": { id: 2228, name: "Elazığspor", logo: mackolikLogo(2228) },
   "seza cimento elazigspor": { id: 2228, name: "Elazığspor", logo: mackolikLogo(2228) },
-  "somaspor": { id: 39474, name: "Somaspor", logo: mackolikLogo(39474) },
+  "somaspor": { id: 39474, name: "Somaspor", logo: "/teams/somaspor.png" },
   "hatayspor": { id: 2883, name: "Hatayspor", logo: mackolikLogo(2883) },
-  "adana demirspor": { id: 2348, name: "Adana Demirspor", logo: mackolikLogo(2348) },
-  "adana demirspor a s": { id: 2348, name: "Adana Demirspor", logo: mackolikLogo(2348) },
+  "adana demirspor": { id: 2348, name: "Adana Demirspor", logo: "/teams/adana-demirspor.png" },
+  "adana demirspor a s": { id: 2348, name: "Adana Demirspor", logo: "/teams/adana-demirspor.png" },
+  "adana demir": { id: 2348, name: "Adana Demirspor", logo: "/teams/adana-demirspor.png" },
 
   // === Nesine 2. Lig - Kırmızı Grup ===
   "12 bingolspor": { id: 31043, name: "12 Bingölspor", logo: mackolikLogo(31043) },
@@ -79,10 +85,11 @@ export const TURKISH_TEAMS_DATABASE: Record<string, TeamLogoEntry> = {
   "adana 01": { id: 56993, name: "Adana 01 FK", logo: mackolikLogo(56993) },
   "adana 01 fk sk": { id: 56993, name: "Adana 01 FK", logo: mackolikLogo(56993) },
   "adana 01 futbol kulubu sk": { id: 56993, name: "Adana 01 FK", logo: mackolikLogo(56993) },
-  "erzincanspor": { id: 9160, name: "24 Erzincanspor", logo: "/teams/24-erzincanspor.png" },
-  "24 erzincanspor": { id: 9160, name: "24 Erzincanspor", logo: "/teams/24-erzincanspor.png" },
-  "24erzincanspor": { id: 9160, name: "24 Erzincanspor", logo: "/teams/24-erzincanspor.png" },
-  "erzincan futbol yatirimlari a s": { id: 9160, name: "24 Erzincanspor", logo: "/teams/24-erzincanspor.png" },
+  "erzincanspor": { id: 9160, name: "Erzincanspor", logo: "/teams/erzincanspor.png" },
+  "24 erzincanspor": { id: 9160, name: "Erzincanspor", logo: "/teams/erzincanspor.png" },
+  "24erzincanspor": { id: 9160, name: "Erzincanspor", logo: "/teams/erzincanspor.png" },
+  "erzincan": { id: 9160, name: "Erzincanspor", logo: "/teams/erzincanspor.png" },
+  "erzincan futbol yatirimlari a s": { id: 9160, name: "Erzincanspor", logo: "/teams/erzincanspor.png" },
   "ankara demirspor": { id: 2245, name: "Ankara Demirspor", logo: mackolikLogo(2245) },
   "ankara demir": { id: 2245, name: "Ankara Demirspor", logo: mackolikLogo(2245) },
   "beyoglu yeni carsi": { id: 29063, name: "Beyoğlu Yeni Çarşı", logo: mackolikLogo(29063) },
@@ -94,22 +101,25 @@ export const TURKISH_TEAMS_DATABASE: Record<string, TeamLogoEntry> = {
   "kahramanmaras istiklalspor": { id: 60677, name: "Kahramanmaraş İstiklalspor", logo: mackolikLogo(60677) },
   "kahramanmaras istiklal": { id: 60677, name: "Kahramanmaraş İstiklalspor", logo: mackolikLogo(60677) },
   "akedas kahramanmaras istiklal spor": { id: 60677, name: "Kahramanmaraş İstiklalspor", logo: mackolikLogo(60677) },
-  "karacabey belediyespor": { id: 11994, name: "Karacabey Belediyespor", logo: mackolikLogo(11994) },
-  "karacabey belediye spor": { id: 11994, name: "Karacabey Belediyespor", logo: mackolikLogo(11994) },
-  "karacabey belediye spor a s": { id: 11994, name: "Karacabey Belediyespor", logo: mackolikLogo(11994) },
+  "karacabey belediyespor": { id: 11994, name: "Karacabey Belediyespor", logo: "/teams/karacabey-bld.png" },
+  "karacabey belediye spor": { id: 11994, name: "Karacabey Belediyespor", logo: "/teams/karacabey-bld.png" },
+  "karacabey belediye spor a s": { id: 11994, name: "Karacabey Belediyespor", logo: "/teams/karacabey-bld.png" },
+  "karacabey": { id: 11994, name: "Karacabey Belediyespor", logo: "/teams/karacabey-bld.png" },
   "kirklarelispor": { id: 16471, name: "Kırklarelispor", logo: mackolikLogo(16471) },
-  "kutahyaspor": { id: 22775, name: "Kütahyaspor", logo: mackolikLogo(22775) },
-  "belediye kutahyaspor": { id: 22775, name: "Kütahyaspor", logo: mackolikLogo(22775) },
-  "kutahyaspor futbol spor kulubu": { id: 22775, name: "Kütahyaspor", logo: mackolikLogo(22775) },
+  "kutahyaspor": { id: 22775, name: "Kütahyaspor", logo: "/teams/kutahyaspor.png" },
+  "belediye kutahyaspor": { id: 22775, name: "Kütahyaspor", logo: "/teams/kutahyaspor.png" },
+  "kutahyaspor futbol spor kulubu": { id: 22775, name: "Kütahyaspor", logo: "/teams/kutahyaspor.png" },
+  "kutahya": { id: 22775, name: "Kütahyaspor", logo: "/teams/kutahyaspor.png" },
   "mke ankaragucu": { id: 2218, name: "Ankaragücü", logo: mackolikLogo(2218) },
   "ankaragucu": { id: 2218, name: "Ankaragücü", logo: mackolikLogo(2218) },
   "ankragucu": { id: 2218, name: "Ankaragücü", logo: mackolikLogo(2218) },
   "sakaryaspor": { id: 2230, name: "Sakaryaspor", logo: mackolikLogo(2230) },
   "sakaryaspor a s": { id: 2230, name: "Sakaryaspor", logo: mackolikLogo(2230) },
-  "serikspor": { id: 25508, name: "Serik Belediyespor", logo: "/teams/serikspor.png" },
-  "serik belediyespor": { id: 25508, name: "Serik Belediyespor", logo: "/teams/serikspor.png" },
-  "serik spor futbol a s": { id: 25508, name: "Serik Belediyespor", logo: "/teams/serikspor.png" },
-  "serik bld": { id: 25508, name: "Serik Belediyespor", logo: "/teams/serikspor.png" },
+  "serikspor": { id: 25508, name: "Serikspor", logo: "/teams/serikspor.png" },
+  "serik belediyespor": { id: 25508, name: "Serikspor", logo: "/teams/serikspor.png" },
+  "serik spor futbol a s": { id: 25508, name: "Serikspor", logo: "/teams/serikspor.png" },
+  "serik bld": { id: 25508, name: "Serikspor", logo: "/teams/serikspor.png" },
+  "serik": { id: 25508, name: "Serikspor", logo: "/teams/serikspor.png" },
   "inegolspor": { id: 6039, name: "İnegölspor", logo: mackolikLogo(6039) },
   "sultan su inegolspor": { id: 6039, name: "İnegölspor", logo: mackolikLogo(6039) },
 
@@ -342,12 +352,36 @@ export function cleanTeamKey(name: string): string {
 export function findAuthenticTeamLogo(teamName: string, existingId?: number, existingLogo?: string): string {
   const norm = normalizeTeamKey(teamName);
 
-  // 1. Doğrulanmış yerel resmi kulüp logoları
+  // 1. Doğrulanmış yerel resmi kulüp logoları (kullanıcı istekleri ve güncel amblemler)
+  if (norm.includes("soma") || existingId === 39474) {
+    return "/teams/somaspor.png";
+  }
+  if (norm.includes("ankaraspor") || norm.includes("sincan bld") || existingId === 2232) {
+    return "/teams/ankaraspor.png";
+  }
+  if (norm.includes("gebze") || existingId === 40074) {
+    return "/teams/gebzespor.png";
+  }
+  if (norm.includes("adana demir") || existingId === 2348) {
+    return "/teams/adana-demirspor.png";
+  }
+  if (norm.includes("aksaray") || existingId === 11998) {
+    return "/teams/aksarayspor.png";
+  }
+  if (norm.includes("arnavutkoy") || existingId === 41558) {
+    return "/teams/arnavutkoy-bld.png";
+  }
+  if (norm.includes("erzincan") || existingId === 9160) {
+    return "/teams/erzincanspor.png";
+  }
   if (norm.includes("serik") || existingId === 25508) {
     return "/teams/serikspor.png";
   }
-  if (norm.includes("erzincan") || existingId === 9160) {
-    return "/teams/24-erzincanspor.png";
+  if (norm.includes("karacabey") || existingId === 11994) {
+    return "/teams/karacabey-bld.png";
+  }
+  if (norm.includes("kutahya") || existingId === 22775) {
+    return "/teams/kutahyaspor.png";
   }
   if (norm.includes("1461 trabzon") || existingId === 24813) {
     return "/teams/1461-trabzon.png";
@@ -382,9 +416,6 @@ export function findAuthenticTeamLogo(teamName: string, existingId?: number, exi
   if (norm.includes("yesilyurt") || existingId === 39098) {
     return "/teams/malatya-yesilyurtspor.png";
   }
-  if (norm.includes("kirsehir") || existingId === 29068) {
-    return "/teams/kirsehir-fsk.png";
-  }
   if (norm.includes("ishakli") || existingId === 25330) {
     return "/teams/beykoz-ishaklispor.png";
   }
@@ -392,11 +423,46 @@ export function findAuthenticTeamLogo(teamName: string, existingId?: number, exi
     return "/teams/yeni-mersin-iy.png";
   }
 
+  // User-specified teams explicitly loaded from /logos/ directory
+  if (norm.includes("soma") || existingId === 39474) {
+    return "/logos/somaspor.png";
+  }
+  if (norm.includes("bitlis") || existingId === 44783) {
+    return "/logos/bitlisspor.png";
+  }
+  if (norm.includes("karaman") || existingId === 39493) {
+    return "/logos/karaman-fk.png";
+  }
+  if (norm.includes("gebze") || existingId === 40074) {
+    return "/logos/gebzespor.png";
+  }
+  if (norm.includes("erzincan") || existingId === 9160) {
+    return "/logos/erzincanspor.png";
+  }
+  if (norm.includes("gaziemir") || existingId === 57043) {
+    return "/logos/gaziemirspor.png";
+  }
+  if (norm.includes("kirsehir") || existingId === 29068) {
+    return "/logos/kirsehir-fsk.png";
+  }
+
   // 2. Resolve team id
   const resolvedId = findAuthenticTeamId(teamName, existingId || 0);
   if (resolvedId > 0) {
+    if (resolvedId === 39474) return "/logos/somaspor.png";
+    if (resolvedId === 44783) return "/logos/bitlisspor.png";
+    if (resolvedId === 39493) return "/logos/karaman-fk.png";
+    if (resolvedId === 40074) return "/logos/gebzespor.png";
+    if (resolvedId === 9160) return "/logos/erzincanspor.png";
+    if (resolvedId === 57043) return "/logos/gaziemirspor.png";
+    if (resolvedId === 29068) return "/logos/kirsehir-fsk.png";
+    if (resolvedId === 2232) return "/teams/ankaraspor.png";
+    if (resolvedId === 2348) return "/teams/adana-demirspor.png";
+    if (resolvedId === 11998) return "/teams/aksarayspor.png";
+    if (resolvedId === 41558) return "/teams/arnavutkoy-bld.png";
     if (resolvedId === 25508) return "/teams/serikspor.png";
-    if (resolvedId === 9160) return "/teams/24-erzincanspor.png";
+    if (resolvedId === 11994) return "/teams/karacabey-bld.png";
+    if (resolvedId === 22775) return "/teams/kutahyaspor.png";
     if (resolvedId === 24813) return "/teams/1461-trabzon.png";
     if (resolvedId === 60517) return "/teams/tokat-belediye.png";
     if (resolvedId === 63806) return "/teams/inkilap-fk.png";
@@ -408,7 +474,6 @@ export function findAuthenticTeamLogo(teamName: string, existingId?: number, exi
     if (resolvedId === 44778) return "/teams/yozgat-bozokspor.png";
     if (resolvedId === 53227) return "/teams/silifkespor.png";
     if (resolvedId === 39098) return "/teams/malatya-yesilyurtspor.png";
-    if (resolvedId === 29068) return "/teams/kirsehir-fsk.png";
     if (resolvedId === 25330) return "/teams/beykoz-ishaklispor.png";
     if (resolvedId === 2244) return "/teams/yeni-mersin-iy.png";
 
@@ -459,9 +524,20 @@ export function findAuthenticTeamId(teamName: string, fallbackId: number = 0): n
  */
 export function getAuthenticTeamName(teamName: string, teamId?: number): string {
   const norm = normalizeTeamKey(teamName);
+  if (norm.includes("erzincan") || teamId === 9160) return "Erzincanspor";
+  if (norm.includes("serik") || teamId === 25508) return "Serikspor";
+  if (norm.includes("bitlis") || teamId === 44783) return "Bitlisspor";
+  if (norm.includes("karaman") || teamId === 39493) return "Karaman FK";
+  if (norm.includes("gaziemir") || teamId === 57043) return "Gaziemirspor";
+  if (norm.includes("kirsehir") || teamId === 29068) return "Kırşehir FSK";
   if (norm.includes("ishakli") || teamId === 25330) return "Beykoz İshaklıspor";
   if (norm.includes("mersin") || teamId === 2244) return "Yeni Mersin İdmanyurdu";
   if (norm.includes("yesilyurt") || teamId === 39098) return "Malatya Yeşilyurtspor";
+  if (norm.includes("soma") || teamId === 39474) return "Somaspor";
+  if (norm.includes("ankaraspor") || norm.includes("sincan bld") || teamId === 2232) return "Ankaraspor";
+  if (norm.includes("gebze") || teamId === 40074) return "Gebzespor";
+  if (norm.includes("kutahya") || teamId === 22775) return "Kütahyaspor";
+  if (norm.includes("karacabey") || teamId === 11994) return "Karacabey Belediyespor";
 
   const resolvedId = findAuthenticTeamId(teamName, teamId || 0);
   if (resolvedId > 0) {

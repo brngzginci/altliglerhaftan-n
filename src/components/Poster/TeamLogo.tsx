@@ -26,12 +26,13 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
 
   // Determine logo URL: always prioritize authentic local & verified club logos
   const authenticLogo = findAuthenticTeamLogo(teamName, safeTeam.id, safeTeam.logo);
-  const effectiveLogo = (authenticLogo && (authenticLogo.startsWith('/teams/') || !safeTeam.logo)) 
-    ? authenticLogo 
-    : (safeTeam.logo || authenticLogo);
+  const effectiveLogo = authenticLogo || safeTeam.logo;
 
-  // Check if team is 1461 Trabzon to boost its scale if needed
-  const is1461Trabzon = teamName.toLowerCase().includes('1461');
+  // Optical size balancing: Since PNG assets are now uniformly normalized to 92% bounding-box fill,
+  // we apply subtle optical compensation for horizontally elongated crests
+  const lowerName = teamName.toLowerCase();
+  const isHorizontallyWide = lowerName.includes('adana demir') || lowerName.includes('1461');
+  const opticalScaleClass = isHorizontallyWide ? 'scale-110' : 'scale-100';
 
   if (hasError || !effectiveLogo) {
     return (
@@ -63,7 +64,7 @@ export const TeamLogo: React.FC<TeamLogoProps> = ({ team, size = 36, className =
         }}
         onError={() => setHasError(true)}
         style={{ maxWidth: '100%', maxHeight: '100%' }}
-        className={`object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)] ${is1461Trabzon ? 'scale-125' : ''} ${className}`}
+        className={`object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,0.7)] ${opticalScaleClass} ${className}`}
         loading="eager"
       />
     </div>

@@ -168,16 +168,29 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
     );
   }
 
-  // Winner highlights
-  const homeIsWinner = isPlayed && homeScore !== null && awayScore !== null && homeScore > awayScore;
-  const awayIsWinner = isPlayed && homeScore !== null && awayScore !== null && awayScore > homeScore;
+  // Robust score parsing
+  const rawHome = homeScore !== null && homeScore !== undefined ? String(homeScore).trim() : '';
+  const rawAway = awayScore !== null && awayScore !== undefined ? String(awayScore).trim() : '';
+  const parsedHome = rawHome !== '' && !isNaN(Number(rawHome)) ? Number(rawHome) : null;
+  const parsedAway = rawAway !== '' && !isNaN(Number(rawAway)) ? Number(rawAway) : null;
+  const hasScores = parsedHome !== null && parsedAway !== null;
+
+  // Effective played state: explicitly played OR valid scores are present (excluding postponed/cancelled)
+  const isMatchPlayed = (isPlayed || hasScores) && !isPostponed && !isCancelled;
+
+  // Winner highlights: strictly and reliably active for EVERY match where a team scored more
+  const homeIsWinner = isMatchPlayed && hasScores && parsedHome > parsedAway;
+  const awayIsWinner = isMatchPlayed && hasScores && parsedAway > parsedHome;
+  const isDraw = isMatchPlayed && hasScores && parsedHome === parsedAway;
 
   // Determine logo size dynamically based on compactness
-  const logoSize = compact ? 40 : 44;
+  const logoSize = compact ? 42 : 46;
 
   return (
     <div
-      className={`relative w-full h-full rounded-xl bg-gradient-to-br from-[#061A22]/95 via-[#092633]/95 to-[#041219]/98 border border-cyan-500/35 shadow-xl flex flex-col justify-between overflow-hidden transition-all group ${
+      className={`relative w-full h-full rounded-xl bg-gradient-to-br from-[#061A22]/95 via-[#092633]/95 to-[#041219]/98 ${
+        homeIsWinner || awayIsWinner ? 'border border-orange-500/45 shadow-[0_0_15px_rgba(255,101,0,0.15)]' : 'border border-cyan-500/35 shadow-xl'
+      } flex flex-col justify-between overflow-hidden transition-all group ${
         compact ? 'p-2.5' : 'p-3'
       }`}
     >
@@ -200,6 +213,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
             )} ${
               homeIsWinner
                 ? 'text-[#FF6500] font-black drop-shadow-[0_0_8px_rgba(255,101,0,0.5)]'
+                : isDraw
+                ? 'text-white font-extrabold'
+                : isMatchPlayed && awayIsWinner
+                ? 'text-slate-300 font-bold'
                 : 'text-white font-extrabold'
             }`}
             title={homeTeam.name}
@@ -211,27 +228,31 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
 
         {/* Score / Status Center Panel */}
         <div className="flex flex-col items-center justify-center flex-shrink-0 min-w-[76px] px-1 py-0.5">
-          {isPlayed && (
+          {isMatchPlayed && (
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center gap-1.5 font-bebas tracking-wider leading-none">
                 <span
                   className={`text-5xl font-black ${
                     homeIsWinner
                       ? 'text-[#FF6500] drop-shadow-[0_0_12px_rgba(255,101,0,0.6)]'
-                      : 'text-white'
+                      : isDraw
+                      ? 'text-cyan-200'
+                      : 'text-slate-300'
                   }`}
                 >
-                  {homeScore ?? 0}
+                  {parsedHome ?? 0}
                 </span>
                 <span className="text-cyan-400/60 text-xl font-sans font-bold px-0.5">-</span>
                 <span
                   className={`text-5xl font-black ${
                     awayIsWinner
                       ? 'text-[#FF6500] drop-shadow-[0_0_12px_rgba(255,101,0,0.6)]'
-                      : 'text-white'
+                      : isDraw
+                      ? 'text-cyan-200'
+                      : 'text-slate-300'
                   }`}
                 >
-                  {awayScore ?? 0}
+                  {parsedAway ?? 0}
                 </span>
               </div>
 
@@ -243,7 +264,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
             </div>
           )}
 
-          {isLive && (
+          {isLive && !isMatchPlayed && (
             <div className="flex flex-col items-center gap-1">
               <span className="bg-red-600 text-white font-black text-[10px] px-2.5 py-0.5 rounded-full animate-pulse tracking-widest font-mono shadow-sm shadow-red-600/50">
                 ● CANLI
@@ -296,6 +317,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
             )} ${
               awayIsWinner
                 ? 'text-[#FF6500] font-black drop-shadow-[0_0_8px_rgba(255,101,0,0.5)]'
+                : isDraw
+                ? 'text-white font-extrabold'
+                : isMatchPlayed && homeIsWinner
+                ? 'text-slate-300 font-bold'
                 : 'text-white font-extrabold'
             }`}
             title={awayTeam.name}
@@ -306,7 +331,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
       </div>
 
       {/* Date & Time Technical Bottom Ribbon (Only for unplayed/upcoming fixtures) */}
-      {!isPlayed && (
+      {!isMatchPlayed && (
         <div className="w-full text-center mt-2 pt-1.5 border-t border-cyan-500/20 text-[11px] text-cyan-200/90 font-mono tracking-widest font-bold uppercase">
           {formattedDate ? formattedDate : ''}
           {formattedDate && displayTime !== '--:--' ? ' • ' : ''}

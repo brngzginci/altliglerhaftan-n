@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Fixture } from '../../types/fixture';
 import { X, Save, RotateCcw, Upload, FileText, Check, Plus, Trash2 } from 'lucide-react';
-import { findAuthenticTeamLogo, findAuthenticTeamId } from '../../data/turkishLowerLeagueTeams';
+import { findAuthenticTeamLogo, findAuthenticTeamId, getAuthenticTeamName } from '../../data/turkishLowerLeagueTeams';
 
 interface FixtureEditorModalProps {
   isOpen: boolean;
@@ -195,6 +195,8 @@ export const FixtureEditorModal: React.FC<FixtureEditorModalProps> = ({
         const homeScore = parseInt(scoreMatch[2], 10);
         const awayScore = parseInt(scoreMatch[3], 10);
         const awayName = scoreMatch[4].trim();
+        const homeId = findAuthenticTeamId(homeName);
+        const awayId = findAuthenticTeamId(awayName);
 
         parsed.push({
           id: `pasted-${idx}-${Date.now()}`,
@@ -203,14 +205,14 @@ export const FixtureEditorModal: React.FC<FixtureEditorModalProps> = ({
           time: '16:00',
           status: 'played',
           homeTeam: {
-            id: findAuthenticTeamId(homeName),
-            name: homeName,
-            logo: findAuthenticTeamLogo(homeName),
+            id: homeId,
+            name: getAuthenticTeamName(homeName, homeId),
+            logo: findAuthenticTeamLogo(homeName, homeId),
           },
           awayTeam: {
-            id: findAuthenticTeamId(awayName),
-            name: awayName,
-            logo: findAuthenticTeamLogo(awayName),
+            id: awayId,
+            name: getAuthenticTeamName(awayName, awayId),
+            logo: findAuthenticTeamLogo(awayName, awayId),
           },
           homeScore,
           awayScore,
@@ -223,6 +225,8 @@ export const FixtureEditorModal: React.FC<FixtureEditorModalProps> = ({
         if (parts.length >= 2) {
           const homeName = parts[0].trim();
           const awayName = parts[1].trim();
+          const homeId = findAuthenticTeamId(homeName);
+          const awayId = findAuthenticTeamId(awayName);
           parsed.push({
             id: `pasted-${idx}-${Date.now()}`,
             week,
@@ -230,14 +234,14 @@ export const FixtureEditorModal: React.FC<FixtureEditorModalProps> = ({
             time: '16:00',
             status: 'fixture',
             homeTeam: {
-              id: findAuthenticTeamId(homeName),
-              name: homeName,
-              logo: findAuthenticTeamLogo(homeName),
+              id: homeId,
+              name: getAuthenticTeamName(homeName, homeId),
+              logo: findAuthenticTeamLogo(homeName, homeId),
             },
             awayTeam: {
-              id: findAuthenticTeamId(awayName),
-              name: awayName,
-              logo: findAuthenticTeamLogo(awayName),
+              id: awayId,
+              name: getAuthenticTeamName(awayName, awayId),
+              logo: findAuthenticTeamLogo(awayName, awayId),
             },
             homeScore: null,
             awayScore: null,
