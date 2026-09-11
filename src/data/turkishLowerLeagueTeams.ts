@@ -352,78 +352,7 @@ export function cleanTeamKey(name: string): string {
 export function findAuthenticTeamLogo(teamName: string, existingId?: number, existingLogo?: string): string {
   const norm = normalizeTeamKey(teamName);
 
-  // 1. Doğrulanmış yerel resmi kulüp logoları (kullanıcı istekleri ve güncel amblemler)
-  if (norm.includes("soma") || existingId === 39474) {
-    return "/teams/somaspor.png";
-  }
-  if (norm.includes("ankaraspor") || norm.includes("sincan bld") || existingId === 2232) {
-    return "/teams/ankaraspor.png";
-  }
-  if (norm.includes("gebze") || existingId === 40074) {
-    return "/teams/gebzespor.png";
-  }
-  if (norm.includes("adana demir") || existingId === 2348) {
-    return "/teams/adana-demirspor.png";
-  }
-  if (norm.includes("aksaray") || existingId === 11998) {
-    return "/teams/aksarayspor.png";
-  }
-  if (norm.includes("arnavutkoy") || existingId === 41558) {
-    return "/teams/arnavutkoy-bld.png";
-  }
-  if (norm.includes("erzincan") || existingId === 9160) {
-    return "/teams/erzincanspor.png";
-  }
-  if (norm.includes("serik") || existingId === 25508) {
-    return "/teams/serikspor.png";
-  }
-  if (norm.includes("karacabey") || existingId === 11994) {
-    return "/teams/karacabey-bld.png";
-  }
-  if (norm.includes("kutahya") || existingId === 22775) {
-    return "/teams/kutahyaspor.png";
-  }
-  if (norm.includes("1461 trabzon") || existingId === 24813) {
-    return "/teams/1461-trabzon.png";
-  }
-  if (norm.includes("tokat") || existingId === 60517) {
-    return "/teams/tokat-belediye.png";
-  }
-  if (norm.includes("inkilap") || existingId === 63806) {
-    return "/teams/inkilap-fk.png";
-  }
-  if (norm.includes("zonguldak") || existingId === 24823) {
-    return "/teams/zonguldakspor.png";
-  }
-  if (norm.includes("bulvar") || existingId === 53205) {
-    return "/teams/bulvarspor.png";
-  }
-  if (norm.includes("gemlik") || norm.includes("sumerbey") || existingId === 53209) {
-    return "/teams/gemlik-sumerbey.png";
-  }
-  if (norm.includes("denizli idman") || (norm.includes("denizli") && norm.includes("yurdu")) || existingId === 2215) {
-    return "/teams/denizli-idmanyurdu.png";
-  }
-  if (norm.includes("nigde") || existingId === 25499) {
-    return "/teams/nigde-belediyespor.png";
-  }
-  if (norm.includes("bozok") || norm.includes("yozgat") || existingId === 44778) {
-    return "/teams/yozgat-bozokspor.png";
-  }
-  if (norm.includes("silifke") || existingId === 53227) {
-    return "/teams/silifkespor.png";
-  }
-  if (norm.includes("yesilyurt") || existingId === 39098) {
-    return "/teams/malatya-yesilyurtspor.png";
-  }
-  if (norm.includes("ishakli") || existingId === 25330) {
-    return "/teams/beykoz-ishaklispor.png";
-  }
-  if (norm.includes("mersin") || existingId === 2244) {
-    return "/teams/yeni-mersin-iy.png";
-  }
-
-  // User-specified teams explicitly loaded from /logos/ directory
+  // 1. Kullanıcının /logos/ dizininden yüklenmesini talep ettiği takımlar:
   if (norm.includes("soma") || existingId === 39474) {
     return "/logos/somaspor.png";
   }
@@ -444,6 +373,70 @@ export function findAuthenticTeamLogo(teamName: string, existingId?: number, exi
   }
   if (norm.includes("kirsehir") || existingId === 29068) {
     return "/logos/kirsehir-fsk.png";
+  }
+
+  // 2. Kullanıcının özellikle belirttiği ve ImageMagick ile eşit dolgunlukta optimize edilen takımlar:
+  if (norm.includes("bozok") || norm.includes("yozgat") || existingId === 44778) {
+    return "/teams/yozgat-bozokspor.png";
+  }
+  if (norm.includes("silifke") || existingId === 53227) {
+    return "/teams/silifkespor.png";
+  }
+  if (norm.includes("yesilyurt") || existingId === 39098) {
+    return "/teams/malatya-yesilyurtspor.png";
+  }
+  if (norm.includes("nigde") || existingId === 25499 || existingId === 4102152) {
+    return "/teams/nigde-belediyespor.png";
+  }
+  if (norm.includes("denizli idman") || norm.includes("denizli") || existingId === 2215) {
+    return "/teams/denizli-idmanyurdu.png";
+  }
+  if (norm.includes("gemlik") || norm.includes("sumerbey") || existingId === 53209) {
+    return "/teams/gemlik-sumerbey.png";
+  }
+  if (norm.includes("ishakli") || existingId === 25330) {
+    return "/teams/beykoz-ishaklispor.png";
+  }
+  if (norm.includes("ankaraspor") || norm.includes("sincan bld") || existingId === 2232) {
+    return "/teams/ankaraspor.png";
+  }
+  if (norm.includes("adana demir") || norm.includes("adanademir") || existingId === 2348) {
+    return "/teams/adana-demirspor.png";
+  }
+  if (norm.includes("arnavutkoy") || existingId === 41558) {
+    return "/teams/arnavutkoy-bld.png";
+  }
+  if (norm.includes("kutahya") || existingId === 22775) {
+    return "/teams/kutahyaspor.png";
+  }
+
+  // Diğer kulüpler
+  if (norm.includes("aksaray") || existingId === 11998) {
+    return "/teams/aksarayspor.png";
+  }
+  if (norm.includes("serik") || existingId === 25508) {
+    return "/teams/serikspor.png";
+  }
+  if (norm.includes("karacabey") || existingId === 11994) {
+    return "/teams/karacabey-bld.png";
+  }
+  if (norm.includes("1461 trabzon") || existingId === 24813) {
+    return "/teams/1461-trabzon.png";
+  }
+  if (norm.includes("tokat") || existingId === 60517) {
+    return "/teams/tokat-belediye.png";
+  }
+  if (norm.includes("inkilap") || existingId === 63806) {
+    return "/teams/inkilap-fk.png";
+  }
+  if (norm.includes("zonguldak") || existingId === 24823) {
+    return "/teams/zonguldakspor.png";
+  }
+  if (norm.includes("bulvar") || existingId === 53205) {
+    return "/teams/bulvarspor.png";
+  }
+  if (norm.includes("mersin") || existingId === 2244) {
+    return "/teams/yeni-mersin-iy.png";
   }
 
   // 2. Resolve team id
