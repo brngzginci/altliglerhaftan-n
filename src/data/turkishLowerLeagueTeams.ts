@@ -274,12 +274,12 @@ export const TURKISH_TEAMS_DATABASE: Record<string, TeamLogoEntry> = {
   "osmaniyespor": { id: 25501, name: "Osmaniyespor", logo: mackolikLogo(25501) },
   "osmaniyespor fk": { id: 25501, name: "Osmaniyespor", logo: mackolikLogo(25501) },
   "ayos osmaniyespor futbol kulubu": { id: 25501, name: "Osmaniyespor", logo: mackolikLogo(25501) },
-  "1964 silifkespor": { id: 53227, name: "Silifke Belediyespor", logo: "/teams/silifkespor.png" },
-  "silifke belediyespor": { id: 53227, name: "Silifke Belediyespor", logo: "/teams/silifkespor.png" },
-  "1964 silifke spor kulubu": { id: 53227, name: "Silifke Belediyespor", logo: "/teams/silifkespor.png" },
-  "silifkespor": { id: 53227, name: "Silifke Belediyespor", logo: "/teams/silifkespor.png" },
-  "silifke spor": { id: 53227, name: "Silifke Belediyespor", logo: "/teams/silifkespor.png" },
-  "silifke": { id: 53227, name: "Silifke Belediyespor", logo: "/teams/silifkespor.png" },
+  "1964 silifkespor": { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
+  "silifke belediyespor": { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
+  "1964 silifke spor kulubu": { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
+  "silifkespor": { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
+  "silifke spor": { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
+  "silifke": { id: 53227, name: "1964 Silifkespor", logo: "/teams/silifkespor.png" },
   "adana adaletgucu": { id: 66811, name: "Adana Adaletgücü", logo: mackolikLogo(66811) },
   "adana adaletgucuspor": { id: 66811, name: "Adana Adaletgücü", logo: mackolikLogo(66811) },
   "adana adaletgucu spor sportif faaliyetler a s": { id: 66811, name: "Adana Adaletgücü", logo: mackolikLogo(66811) },
@@ -531,6 +531,7 @@ export function getAuthenticTeamName(teamName: string, teamId?: number): string 
   if (norm.includes("gebze") || teamId === 40074) return "Gebzespor";
   if (norm.includes("kutahya") || teamId === 22775) return "Kütahyaspor";
   if (norm.includes("karacabey") || teamId === 11994) return "Karacabey Belediyespor";
+  if (norm.includes("silifke") || teamId === 53227) return "1964 Silifkespor";
 
   const resolvedId = findAuthenticTeamId(teamName, teamId || 0);
   if (resolvedId > 0) {

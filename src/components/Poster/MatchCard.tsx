@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Fixture } from '../../types/fixture';
 import { TeamLogo } from './TeamLogo';
+import { getAuthenticTeamName } from '../../data/turkishLowerLeagueTeams';
 
 interface MatchCardProps {
   fixture: Fixture;
@@ -55,6 +56,8 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
   const status = fixture?.status || 'fixture';
   const homeTeam = fixture?.homeTeam || { id: 0, name: 'Bilinmeyen Takım', logo: '' };
   const awayTeam = fixture?.awayTeam || { id: 0, name: 'Bilinmeyen Takım', logo: '' };
+  const homeDisplayName = getAuthenticTeamName(homeTeam.name, homeTeam.id);
+  const awayDisplayName = getAuthenticTeamName(awayTeam.name, awayTeam.id);
   const homeScore = fixture?.homeScore ?? null;
   const awayScore = fixture?.awayScore ?? null;
   const halfTimeHomeScore = fixture?.halfTimeHomeScore ?? null;
@@ -208,7 +211,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end text-right">
           <span
             className={`font-montserrat uppercase tracking-tight line-clamp-2 ${getTeamFontSize(
-              homeTeam.name,
+              homeDisplayName,
               compact
             )} ${
               homeIsWinner
@@ -219,9 +222,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
                 ? 'text-slate-300 font-bold'
                 : 'text-white font-extrabold'
             }`}
-            title={homeTeam.name}
+            title={homeDisplayName}
           >
-            {homeTeam.name}
+            {homeDisplayName}
           </span>
           <TeamLogo team={homeTeam} size={logoSize} />
         </div>
@@ -312,7 +315,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
           <TeamLogo team={awayTeam} size={logoSize} />
           <span
             className={`font-montserrat uppercase tracking-tight line-clamp-2 ${getTeamFontSize(
-              awayTeam.name,
+              awayDisplayName,
               compact
             )} ${
               awayIsWinner
@@ -323,9 +326,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, compact = false }
                 ? 'text-slate-300 font-bold'
                 : 'text-white font-extrabold'
             }`}
-            title={awayTeam.name}
+            title={awayDisplayName}
           >
-            {awayTeam.name}
+            {awayDisplayName}
           </span>
         </div>
       </div>
